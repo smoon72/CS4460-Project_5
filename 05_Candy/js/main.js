@@ -1,18 +1,27 @@
-dataset = null
-
-var Northeast = ['Connecticut', 'Maine', 'Massachusetts', 'New Hampshire', 'Rhode Island', 'Vermont', 'New Jersey', 'New York',
-'Pennslyvania'];
-
-var Midwest = ['Illinois', 'Michigan', 'Ohio', 'Wisconsin', 'Iowa', 'Kansas', 'Minnesota', 'Missouri', 'Nebraska', 'North Dakota',
-'South Dakota'];
+/*
+    Four Regions across US
+    Note about data, Delware not in
+ */
 
 
-var South = ['Delaware', 'Florida', 'Georgia', 'Maryland', 'North Caroline', 'South Carolina', 'Virginia', 'Washington DC', 'West Virginia',
-'Alabama', 'Kentucky', 'Mississippi', 'Tennessee', 'Arkansas', 'Louisiana', 'Oklahoma', 'Texas'];
 
-var West = ['Arizona', 'Colorado', 'Idaho', 'Montana', 'Nevada', 'New Mexico', 'Utah', 'Wyoming', 'Alaska', 'California', 'Hawaii', 'Oregon', 'Washington'];
+var Northeast = ['Connecticut', 'Maine', 'Massachusetts', 'New Hampshire', 'New Jersey', 'New York', 'Pennslyvania',
+    'Rhode Island', 'Vermont'];
+
+var Midwest = ['Illinois', 'Indiana', 'Iowa', 'Kansas', 'Michigan', 'Minnesota', 'Missouri', 'Nebraska',
+    'North Dakota', 'Ohio', 'South Dakota', 'Wisconsin' ];
 
 
+var South = ['Alabama', 'Arkansas', 'Florida', 'Georgia', 'Kentucky', 'Louisiana', 'Maryland', 'Mississippi',
+    'North Carolina', 'Oklahoma', 'South Carolina',  'Tennessee', 'Texas', 'Virginia', 'West Virginia'];
+
+var West = ['Alaska', 'Arizona', 'California', 'Colorado', 'Hawaii', 'Idaho', 'Montana', 'Nevada', 'New Mexico',
+    'Oregon', 'Utah', 'Washington', 'Wyoming'];
+
+
+/*
+    Candy Categories
+ */
 var Chocolate = ['Q6_Butterfinger', 'Q6_Heath_Bar', 'Q6_Hershey_s_Dark_Chocolate', 'Q6_Hershey_s_Milk_Chocolate',
 'Q6_Hershey_s_Kisses', 'Q6_Junior_Mints', 'Q6_Kit_Kat', 'Q6_Milk_Duds', 'Q6_Milky_Way', 'Q6_Regular_M_Ms',
 'Q6_Peanut_M_M_s', 'Q6_Mint_Kisses', 'Q6_Mr_Goodbar', 'Q6_Nestle_Crunch', 'Q6_Reese_s_Peanut_Butter_Cups',
@@ -31,6 +40,11 @@ var Gum = ['Q6_Chiclets', 'Q6_Dots', 'Q6_Tic_Tacs'];
 var Licorice = ['Q6_Good_N_Plenty', 'Q6_Licorice_not_black', 'Q6_Licorice_yes_black'];
 
 var Trail_Mix = ['Trail Mix:'];
+
+
+
+
+
 
 d3.csv('./data/us_candy.csv', function(error, __dataset){
     if(error) {
@@ -78,21 +92,56 @@ function setup() {
         }
     });
 
-    // console.log('Northeast');
-    // console.log(Northeast.length);
-    // console.log(filterNE);
+    console.log('Northeast');
+    console.log(Northeast.length);
+    console.log(filterNE);
+
+    console.log('Midwest');
+    console.log(Midwest.length);
+    console.log(filterMW);
+
+    console.log('South');
+    console.log(South.length);
+    console.log(filterS);
+
+    console.log('West');
+    console.log(West.length);
+    console.log(filterW);
+
+    /*
+    Getting the NorthEast Data
+     */
+    // var maleCount = 0;
+    // var femaleCount = 0;
     //
-    // console.log('Midwest');
-    // console.log(Midwest.length);
-    // console.log(filterMW);
+    // for (var i=0; i<Northeast.length; i++) {
     //
-    // console.log('South');
-    // console.log(South.length);
-    // console.log(filterS);
-    //
-    // console.log('West');
-    // console.log(West.length);
-    // console.log(filterW);
+    // }
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
