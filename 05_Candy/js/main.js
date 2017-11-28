@@ -13,7 +13,7 @@ var Midwest = ['Illinois', 'Indiana', 'Iowa', 'Kansas', 'Michigan', 'Minnesota',
 
 
 var South = ['Alabama', 'Arkansas', 'Florida', 'Georgia', 'Kentucky', 'Louisiana', 'Maryland', 'Mississippi',
-    'North Carolina', 'Oklahoma', 'South Carolina',  'Tennessee', 'Texas', 'Virginia', 'West Virginia'];
+    'North Carolina', 'Oklahoma', 'South Carolina',  'Tennessee', 'Texas', 'Virginia', 'Washington DC','West Virginia'];
 
 var West = ['Alaska', 'Arizona', 'California', 'Colorado', 'Hawaii', 'Idaho', 'Montana', 'Nevada', 'New Mexico',
     'Oregon', 'Utah', 'Washington', 'Wyoming'];
@@ -54,10 +54,15 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     }
     // **** Your JavaScript code goes here ***
 
+    var i = 0;
     //console.log(__dataset);
     dataset = __dataset
     data_by_state = d3.nest()
         .key(function (d) {
+            i++;
+            if (d.Q3_AGE==null) {
+                console.log(i);
+            }
             return d.Q5_STATE_PROVINCE_COUNTY_ETC;
         })
         .entries(dataset);
