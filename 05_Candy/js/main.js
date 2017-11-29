@@ -198,71 +198,12 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
 });
 
 function setup() {
-    /*
-    Getting the NorthEast Data
-     */
-
-
-    for ( i=0; i<Northeast.length; i++) {
-        //console.log(filterNE[i].values.length);
-
-        //console.log(filterNE[i].values[i].Q2_GENDER);
-
-        for ( j=0; j<filterNE[i].values.length; j++) {
-            var gender = filterNE[i].values[j].Q2_GENDER;
-            var age = filterNE[i].values[j].Q3_AGE;
-
-
-            if (gender == "Male") {
-                if (age <= 17 ) {
-                    bin1Male++;
-                } else if (age <=34) {
-                    bin2Male++;
-                } else if (age <= 59) {
-                    bin3Male++;
-                } else {
-                    candyCounter();
-                    bin4Male++;
-                }
-            } else if (gender == "Female"){
-                if (age <= 17 ) {
-                    bin1Female++;
-                } else if (age <=34) {
-                    bin2Female++;
-                } else if (age <= 59) {
-                    bin3Female++;
-                } else {
-                    bin4Female++;
-                }
-            }
-        }
-
-    }
-
     console.log(chocolateData);
-
-
     d3.graphScroll()
         .sections(d3.selectAll('#sections > div'))
         .on('active', function(i){ console.log(i + 'th section active') })
 
 }
-
-// var Chocolate = ['Q6_Butterfinger', 'Q6_Heath_Bar', 'Q6_Hershey_s_Dark_Chocolate', 'Q6_Hershey_s_Milk_Chocolate',
-//     'Q6_Hershey_s_Kisses', 'Q6_Junior_Mints', 'Q6_Kit_Kat', 'Q6_Milk_Duds', 'Q6_Milky_Way', 'Q6_Regular_M_Ms',
-//     'Q6_Peanut_M_M_s', 'Q6_Mint_Kisses', 'Q6_Mr_Goodbar', 'Q6_Nestle_Crunch', 'Q6_Reese_s_Peanut_Butter_Cups',
-//     'Q6_Reese_s_Pieces', 'Q6_Rolos', 'Q6_Snickers', 'Q6_Three_Musketeers', 'Q6_Tolberone_something_or_other',
-//     'Q6_Twix', 'Q6_Whatchamacallit_Bar', 'Q6_York_Peppermint_Patties'];
-
-function candyCounter(){
-    var level = filterNE[i].values[j].Q6_Butterfinger;
-    if (level == "JOY") {
-        chocolateData++;
-    } else if(level == "DESPAIR") {
-        chocolateData--;
-    }
-}
-
 
 
 
