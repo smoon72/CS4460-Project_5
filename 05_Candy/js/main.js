@@ -40,7 +40,9 @@ var Trail_Mix = ['Trail Mix:'];
 
 
 
+var joy = 0;
 
+var despair = 0;
 
 
 d3.csv('./data/us_candy.csv', function(error, __dataset){
@@ -56,11 +58,28 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     dataset = __dataset
     data_by_state = d3.nest()
         .key(function (d) {
-            i++;
-            if (d.Q3_AGE==null) {
-                console.log(i);
-            }
+            //return d.Q3_AGE;
             return d.Q5_STATE_PROVINCE_COUNTY_ETC;
+        })
+        .key(function (d) {
+            return d.Q2_GENDER;
+        })
+        .key(function (d) {
+            return d.Q3_AGE;
+        }).sortKeys(d3.ascending)
+        .rollup(function (d,i) {
+            return {
+                butterfingers : d.map(function (d) {
+                    if (d.Q6_Butterfinger == "JOY") {
+                        joy++;
+                    } else if (d.Q6_Butterfinger == "DESPAIR") {
+                        joy--;
+                    }
+                    var joyname = joy;
+                    joy = 0;
+                    return joyname;
+                })
+            };
         })
         .entries(dataset);
 
@@ -70,61 +89,129 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
 
 function setup() {
 
-    var filterNE = data_by_state.filter(function (d,i) {
+    filterNE = data_by_state.filter(function (d,i) {
         if (Northeast.includes(d.key)) {
             return d.key;
         }
     });
 
-    var filterMW = data_by_state.filter(function (d,i) {
-        if (Midwest.includes(d.key)) {
-            return d.key;
-        }
-    });
-
-    var filterS = data_by_state.filter(function (d,i) {
-        if (South.includes(d.key)) {
-            return d.key;
-        }
-    });
-
-    var filterW = data_by_state.filter(function (d,i) {
-        if (West.includes(d.key)) {
-            return d.key;
-        }
-    });
+    // filterMW = data_by_state.filter(function (d,i) {
+    //     if (Midwest.includes(d.key)) {
+    //         return d.key;
+    //     }
+    // });
+    //
+    // filterS = data_by_state.filter(function (d,i) {
+    //     if (South.includes(d.key)) {
+    //         return d.key;
+    //     }
+    // });
+    //
+    // filterW = data_by_state.filter(function (d,i) {
+    //     if (West.includes(d.key)) {
+    //         return d.key;
+    //     }
+    // });
 
     console.log('Northeast');
-    console.log(Northeast.length);
+    //console.log(Northeast.length);
     console.log(filterNE);
 
-    console.log('Midwest');
-    console.log(Midwest.length);
-    console.log(filterMW);
-
-    console.log('South');
-    console.log(South.length);
-    console.log(filterS);
-
-    console.log('West');
-    console.log(West.length);
-    console.log(filterW);
+    // console.log('Midwest');
+    // //console.log(Midwest.length);
+    // console.log(filterMW);
+    //
+    // console.log('South');
+    // //console.log(South.length);
+    // console.log(filterS);
+    //
+    // console.log('West');
+    // //console.log(West.length);
+    // console.log(filterW);
 
     /*
     Getting the NorthEast Data
      */
-    // var maleCount = 0;
-    // var femaleCount = 0;
-    //
-    // for (var i=0; i<Northeast.length; i++) {
-    //
-    // }
+
+
+
+
+
+    /*
+        Bins for the ages
+        Range: 6 to 99
+
+        Bin1:  6 to 17
+        Bin2: 18 to 34
+        Bin3: 35 to 59
+        Bin4: 60 to 99
+     */
+    var bin1Male = 0;
+    var bin2Male = 0;
+    var bin3Male = 0;
+    var bin4Male = 0;
+
+    var bin1Female = 0;
+    var bin2Female = 0;
+    var bin3Female = 0;
+    var bin4Female = 0;
+
+
+
+
+    for ( i=0; i<Northeast.length; i++) {
+        //console.log(filterNE[i].values.length);
+
+        //console.log(filterNE[i].values[i].Q2_GENDER);
+
+        for ( j=0; j<filterNE[i].values.length; j++) {
+            var gender = filterNE[i].values[j].Q2_GENDER;
+            var age = filterNE[i].values[j].Q3_AGE;
+
+
+            if (gender == "Male") {
+                if (age <= 17 ) {
+                    candyCounter();
+                    bin1Male++;
+                } else if (age <=34) {
+                    bin2Male++;
+                } else if (age <= 59) {
+                    bin3Male++;
+                } else {
+                    bin4Male++;
+                }
+            } else if (gender == "Female"){
+                if (age <= 17 ) {
+                    bin1Female++;
+                } else if (age <=34) {
+                    bin2Female++;
+                } else if (age <= 59) {
+                    bin3Female++;
+                } else {
+                    bin4Female++;
+                }
+            }
+        }
+
+    }
+
+    console.log(bin1Male);
+    console.log(bin2Male);
+    console.log(bin3Male);
+    console.log(bin4Male);
+
+    console.log(bin1Female);
+    console.log(bin2Female);
+    console.log(bin3Female);
+    console.log(bin4Female);
 
 
 }
 
-
-
+// function candyCounter(){
+//     //filterNE[i].values[j].Q6_Butterfinger
+// }
+//
 
 
 
