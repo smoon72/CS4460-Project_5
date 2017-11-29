@@ -42,6 +42,34 @@ var Trail_Mix = ['Q6_Trail_Mix'];
 
 var chocolateData = 0;
 
+var dataset = null;
+
+var data_by_region_age_gender = null;
+
+function get_region(state) {
+  if (Northeast.includes(state)) {
+    return "Northeast";
+  } else if (Midwest.includes(state)) {
+    return "Midwest";
+  } else if (South.includes(state)) {
+    return "South";
+  } else if (West.includes(state)) {
+    return "West";
+  }
+  return "NA";
+}
+
+function get_age_group(age) {
+  if (age < 18 ) {
+    return "6-17";
+  } else if (age < 35) {
+    return "18-34";
+  } else if (age < 60) {
+    return "35-59";
+  }
+  return "60+";
+}
+
 
 d3.csv('./data/us_candy.csv', function(error, __dataset){
     if(error) {
@@ -54,44 +82,63 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     var i = 0;
     //console.log(__dataset);
     dataset = __dataset
-    data_by_state = d3.nest()
-        .key(function (d) {
-            //return d.Q3_AGE;
-            return d.Q5_STATE_PROVINCE_COUNTY_ETC;
-        }).sortKeys(d3.ascending)
-        // .key(function (d) {
-        //     return d.Q2_GENDER;
-        // })
-        // .key(function (d) {
-        //     return d.Q3_AGE;
-        // }).sortKeys(d3.ascending)
-        // .rollup(function (d,i) {
-        //     return {
-        //         butterfingers : d.map(function (d) {
-        //             if (d.Q6_Butterfinger == "JOY") {
-        //                 joy++;
-        //             } else if (d.Q6_Butterfinger == "DESPAIR") {
-        //                 joy--;
-        //             }
-        //             var joyname = joy;
-        //             joy = 0;
-        //             return joyname;
-        //         })
-        //     };
-        // })
-        .entries(dataset);
 
-    console.log(data_by_state);
-    setup();
+    data_by_region_age_gender =
+      d3.nest()
+        .key(function(d) {
+          return get_region(d.Q5_STATE_PROVINCE_COUNTY_ETC);
+        })
+        .key(function(d) {
+          return get_age_group(d.Q3_AGE);
+        })
+        .key(function(d) {
+          return d.Q2_GENDER;
+        }).entries(dataset);
+
+    console.log(data_by_region_age_gender)
+
+    // data_by_state = d3.nest()
+    //     .key(function (d) {
+    //         //return d.Q3_AGE;
+    //         return d.Q5_STATE_PROVINCE_COUNTY_ETC;
+    //     }).sortKeys(d3.ascending)
+    //     // .key(function (d) {
+    //     //     return d.Q2_GENDER;
+    //     // })
+    //     // .key(function (d) {
+    //     //     return d.Q3_AGE;
+    //     // }).sortKeys(d3.ascending)
+    //     // .rollup(function (d,i) {
+    //     //     return {
+    //     //         butterfingers : d.map(function (d) {
+    //     //             if (d.Q6_Butterfinger == "JOY") {
+    //     //                 joy++;
+    //     //             } else if (d.Q6_Butterfinger == "DESPAIR") {
+    //     //                 joy--;
+    //     //             }
+    //     //             var joyname = joy;
+    //     //             joy = 0;
+    //     //             return joyname;
+    //     //         })
+    //     //     };
+    //     // })
+    //     .entries(dataset);
+    //
+    // console.log(data_by_state);
+
+    /**
+    Uncomment setup!!
+    **/
+    //setup();
 });
 
 function setup() {
-
-    filterNE = data_by_state.filter(function (d,i) {
-        if (Northeast.includes(d.key)) {
-            return d.key;
-        }
-    });
+    //
+    // filterNE = data_by_state.filter(function (d,i) {
+    //     if (Northeast.includes(d.key)) {
+    //         return d.key;
+    //     }
+    // });
 
     // filterMW = data_by_state.filter(function (d,i) {
     //     if (Midwest.includes(d.key)) {
