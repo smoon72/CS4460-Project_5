@@ -46,6 +46,24 @@ var dataset = null;
 
 var data_by_region_age_gender = null;
 
+
+
+function get_candy_category(candy_string) {
+  if (Chocolate.includes(candy_string)) {
+    return "Chocolate";
+  } else if (Fruit.includes(candy_string)) {
+      return "Fruit";
+  } else if (Other.includes(candy_string)) {
+      return "Other";
+  } else if (Gum.includes(candy_string)) {
+      return "Gum";
+  } else if (Licorice.includes(candy_string)) {
+      return "Licorice";
+  } else if (Trail_Mix.includes(candy_string)) {
+      return "Trail Mix";
+  }
+}
+
 function get_region(state) {
   if (Northeast.includes(state)) {
     return "Northeast";
@@ -70,6 +88,20 @@ function get_age_group(age) {
   return "60+";
 }
 
+function get_joy_value(joy_string) {
+  if (joy_string == "JOY") {
+    return 1.;
+  } else if (joy_string == "MEH") {
+    return 0.;
+  }
+  return -1.;
+}
+
+function get_category_joy(entry, category) {
+  return d3.mean(category, function(d) {
+     return get_joy_value(entry[d]);
+  })
+}
 
 d3.csv('./data/us_candy.csv', function(error, __dataset){
     if(error) {
@@ -96,6 +128,7 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         }).entries(dataset);
 
     console.log(data_by_region_age_gender)
+    console.log(get_category_joy(dataset[0], Chocolate))
 
     // data_by_state = d3.nest()
     //     .key(function (d) {
