@@ -1,6 +1,6 @@
 /*
     Four Regions across US
-    Note about data, Delware not in
+    Delware not in the dataset
  */
 var Northeast = ['Connecticut', 'Maine', 'Massachusetts', 'New Hampshire', 'New Jersey', 'New York', 'Pennsylvania',
     'Rhode Island', 'Vermont'];
@@ -38,13 +38,11 @@ var Licorice = ['Q6_Good_N_Plenty', 'Q6_Licorice_not_black', 'Q6_Licorice_yes_bl
 
 var Trail_Mix = ['Q6_Trail_Mix'];
 
-
+var dataset = null;
+var data_by_region_age_gender = null;
 
 var chocolateData = 0;
-
-var dataset = null;
-
-var data_by_region_age_gender = null;
+var count = 0;
 
 function get_region(state) {
   if (Northeast.includes(state)) {
@@ -66,8 +64,9 @@ function get_age_group(age) {
     return "18-34";
   } else if (age < 60) {
     return "35-59";
+  } else {
+    return "60+";
   }
-  return "60+";
 }
 
 
@@ -85,78 +84,64 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
 
     data_by_region_age_gender =
       d3.nest()
-        .key(function(d) {
-          return get_region(d.Q5_STATE_PROVINCE_COUNTY_ETC);
-        })
-        .key(function(d) {
-          return get_age_group(d.Q3_AGE);
-        })
-        .key(function(d) {
-          return d.Q2_GENDER;
-        }).entries(dataset);
+      .key(function(d) {
+        return d.Q5_STATE_PROVINCE_COUNTY_ETC;
+      })
 
-    console.log(data_by_region_age_gender)
+        // .key(function(d) {
+        //   return get_region(d.Q5_STATE_PROVINCE_COUNTY_ETC);
+        // })
+        // .key(function(d) {
+        //   return get_age_group(d.Q3_AGE);
+        // })
+        // .key(function(d) {
+        //   return d.Q2_GENDER;
+        // }).sortKeys(d3.ascending)
+        // .rollup(function (d,i) {
+        //     return {
+        //         Chocolate : d3.sum(d.map(function (d) {
+        //             if (d.Q6_Butterfinger == "JOY") {
+        //                 chocolateData++;
+        //                 //return 1;
+        //             } else if (d.Q6_Butterfinger == "DESPAIR") {
+        //                 chocolateData--;
+        //                 //return -1;
+        //             }
+        //             var joyname = chocolateData;
+        //             chocolateData = 0;
+        //             return joyname;
+        //         }))
+        //     };
+        // })
+    .entries(dataset);
 
-    // data_by_state = d3.nest()
-    //     .key(function (d) {
-    //         //return d.Q3_AGE;
-    //         return d.Q5_STATE_PROVINCE_COUNTY_ETC;
-    //     }).sortKeys(d3.ascending)
-    //     // .key(function (d) {
-    //     //     return d.Q2_GENDER;
-    //     // })
-    //     // .key(function (d) {
-    //     //     return d.Q3_AGE;
-    //     // }).sortKeys(d3.ascending)
-    //     // .rollup(function (d,i) {
-    //     //     return {
-    //     //         butterfingers : d.map(function (d) {
-    //     //             if (d.Q6_Butterfinger == "JOY") {
-    //     //                 joy++;
-    //     //             } else if (d.Q6_Butterfinger == "DESPAIR") {
-    //     //                 joy--;
-    //     //             }
-    //     //             var joyname = joy;
-    //     //             joy = 0;
-    //     //             return joyname;
-    //     //         })
-    //     //     };
-    //     // })
-    //     .entries(dataset);
+    console.log(data_by_region_age_gender);
+
+    // for (var a=0; a<data_by_region_age_gender.length; a++) {
+    //     for (var b=0; b<data_by_region_age_gender[a].values.length; b++) {
+    //         for (var c=0; c<data_by_region_age_gender[a].values[b].values.length; c++) {
+    //             for (var d=0; d<data_by_region_age_gender[a].values[b].values[c].values.length; d++) {
     //
-    // console.log(data_by_state);
+    //             }
+    //         }
+    //     }
+    // }
+
 
     /**
     Uncomment setup!!
     **/
-    //setup();
+    setup();
 });
 
 function setup() {
-    //
-    // filterNE = data_by_state.filter(function (d,i) {
-    //     if (Northeast.includes(d.key)) {
-    //         return d.key;
-    //     }
-    // });
+    filterNE = data_by_region_age_gender.filter(function (d,i) {
+        if (Northeast.includes(d.key)) {
+            return d.key;
+                    }
+    });
 
-    // filterMW = data_by_state.filter(function (d,i) {
-    //     if (Midwest.includes(d.key)) {
-    //         return d.key;
-    //     }
-    // });
-    //
-    // filterS = data_by_state.filter(function (d,i) {
-    //     if (South.includes(d.key)) {
-    //         return d.key;
-    //     }
-    // });
-    //
-    // filterW = data_by_state.filter(function (d,i) {
-    //     if (West.includes(d.key)) {
-    //         return d.key;
-    //     }
-    // });
+
 
     console.log('Northeast');
     //console.log(Northeast.length);
@@ -177,11 +162,6 @@ function setup() {
     /*
     Getting the NorthEast Data
      */
-
-
-
-
-
     /*
         Bins for the ages
         Range: 6 to 99
@@ -201,8 +181,14 @@ function setup() {
     var bin3Female = 0;
     var bin4Female = 0;
 
+    // Chocolate.forEach(function(element) {
+    //     console.log(element);
+    // });
 
+    var arr = ['Q3_AGE'];
 
+    arr.forEach(function (element) {
+        console.log(element);
 
     for ( i=0; i<Northeast.length; i++) {
         //console.log(filterNE[i].values.length);
@@ -211,7 +197,9 @@ function setup() {
 
         for ( j=0; j<filterNE[i].values.length; j++) {
             var gender = filterNE[i].values[j].Q2_GENDER;
-            var age = filterNE[i].values[j].Q3_AGE;
+            var age = filterNE[i].values[j].element;
+
+            //var age = filterNE[i].values[j].arr[0];
 
 
             if (gender == "Male") {
@@ -240,28 +228,25 @@ function setup() {
 
     }
 
-    console.log(chocolateData);
+    })
 
-    // console.log(bin1Male);
-    // console.log(bin2Male);
-    // console.log(bin3Male);
-    // console.log(bin4Male);
-    //
-    // console.log(bin1Female);
-    // console.log(bin2Female);
-    // console.log(bin3Female);
-    // console.log(bin4Female);
+    //console.log(chocolateData);
+
+    console.log(bin1Male);
+    console.log(bin2Male);
+    console.log(bin3Male);
+    console.log(bin4Male);
+
+    console.log(bin1Female);
+    console.log(bin2Female);
+    console.log(bin3Female);
+    console.log(bin4Female);
 
 
 }
 
-// var Chocolate = ['Q6_Butterfinger', 'Q6_Heath_Bar', 'Q6_Hershey_s_Dark_Chocolate', 'Q6_Hershey_s_Milk_Chocolate',
-//     'Q6_Hershey_s_Kisses', 'Q6_Junior_Mints', 'Q6_Kit_Kat', 'Q6_Milk_Duds', 'Q6_Milky_Way', 'Q6_Regular_M_Ms',
-//     'Q6_Peanut_M_M_s', 'Q6_Mint_Kisses', 'Q6_Mr_Goodbar', 'Q6_Nestle_Crunch', 'Q6_Reese_s_Peanut_Butter_Cups',
-//     'Q6_Reese_s_Pieces', 'Q6_Rolos', 'Q6_Snickers', 'Q6_Three_Musketeers', 'Q6_Tolberone_something_or_other',
-//     'Q6_Twix', 'Q6_Whatchamacallit_Bar', 'Q6_York_Peppermint_Patties'];
-
 function candyCounter(){
+    //var level = filterNE[i].values[j].Chocolate[i];
     var level = filterNE[i].values[j].Q6_Butterfinger;
     if (level == "JOY") {
         chocolateData++;
