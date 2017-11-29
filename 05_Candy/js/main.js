@@ -60,7 +60,7 @@ function get_candy_category(candy_string) {
   } else if (Licorice.includes(candy_string)) {
       return "Licorice";
   } else if (Trail_Mix.includes(candy_string)) {
-      return "Trail Mix";
+      return "Trail_Mix";
   }
 }
 
@@ -100,7 +100,7 @@ function get_joy_value(joy_string) {
 function get_category_joy(entry, category) {
   return d3.mean(category, function(d) {
       //console.log(d);
-      console.log(entry[d]);
+      //console.log(entry[d]);
      return get_joy_value(entry[d]);
   })
 }
@@ -132,14 +132,64 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         .key(function(d) {
           return d.Q2_GENDER;
         }).entries(dataset);
+    //
+     console.log(data_by_region_age_gender);
+    console.log(get_category_joy(dataset[0], Trail_Mix));
+    console.log(get_category_joy(dataset[3], Trail_Mix));
+    console.log(get_category_joy(dataset[4], Trail_Mix));
+    console.log(get_category_joy(dataset[7], Trail_Mix));
 
-    console.log(data_by_region_age_gender);
 
-    console.log(get_category_joy(dataset[0], Chocolate));
+    for (var a=0; a<1; a++) {
+        for (var b=0; b<1; b++) {
+            for (var c=0; c<1; c++) {
+                var choclate_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+                    return get_category_joy(d, Chocolate);
+                });
 
-    // for (var i=0; i<dataset.length; i++) {
-    //     console.log(get_category_joy(dataset[i], Chocolate))
+                var fruit_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+                    return get_category_joy(d, Fruit);
+                });
+
+                var other_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+                    return get_category_joy(d, Other);
+                });
+
+                var gum_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+                    return get_category_joy(d, Gum);
+                });
+
+                var licorice_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+                    return get_category_joy(d, Licorice);
+                });
+
+                var trail_mix_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+                    return get_category_joy(d, Trail_Mix);
+                });
+            }
+        }
+
+    }
+
+    console.log(choclate_mean);
+    console.log(fruit_mean);
+    console.log(other_mean);
+    console.log(gum_mean);
+    console.log(licorice_mean);
+    console.log(trail_mix_mean);
+
+
+    // for (var a=0; a<data_by_region_age_gender.length; a++) {
+    //     for (var b=0; b<data_by_region_age_gender[a].values.length; b++) {
+    //         for (var c=0; c<data_by_region_age_gender[a].values[b].values.length; c++) {
+    //             for (var d=0; d<data_by_region_age_gender[a].values[b].values[c].values.length; d++) {
+    //
+    //
+    //             }
+    //         }
+    //     }
     // }
+
 
     /**
     Uncomment setup!!
@@ -148,41 +198,9 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
 });
 
 function setup() {
-
-
-    console.log('Northeast');
-    //console.log(Northeast.length);
-    console.log(filterNE);
-
-
     /*
     Getting the NorthEast Data
      */
-
-
-
-
-
-    /*
-        Bins for the ages
-        Range: 6 to 99
-
-        Bin1:  6 to 17
-        Bin2: 18 to 34
-        Bin3: 35 to 59
-        Bin4: 60 to 99
-     */
-    var bin1Male = 0;
-    var bin2Male = 0;
-    var bin3Male = 0;
-    var bin4Male = 0;
-
-    var bin1Female = 0;
-    var bin2Female = 0;
-    var bin3Female = 0;
-    var bin4Female = 0;
-
-
 
 
     for ( i=0; i<Northeast.length; i++) {
@@ -223,15 +241,7 @@ function setup() {
 
     console.log(chocolateData);
 
-    // console.log(bin1Male);
-    // console.log(bin2Male);
-    // console.log(bin3Male);
-    // console.log(bin4Male);
-    //
-    // console.log(bin1Female);
-    // console.log(bin2Female);
-    // console.log(bin3Female);
-    // console.log(bin4Female);
+
     d3.graphScroll()
         .sections(d3.selectAll('#sections > div'))
         .on('active', function(i){ console.log(i + 'th section active') })
