@@ -36,13 +36,11 @@ var Gum = ['Q6_Chiclets', 'Q6_Dots', 'Q6_Tic_Tacs'];
 
 var Licorice = ['Q6_Good_N_Plenty', 'Q6_Licorice_not_black', 'Q6_Licorice_yes_black'];
 
-var Trail_Mix = ['Trail Mix:'];
+var Trail_Mix = ['Q6_Trail_Mix'];
 
 
 
-var joy = 0;
-
-var despair = 0;
+var chocolateData = 0;
 
 
 d3.csv('./data/us_candy.csv', function(error, __dataset){
@@ -60,27 +58,27 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         .key(function (d) {
             //return d.Q3_AGE;
             return d.Q5_STATE_PROVINCE_COUNTY_ETC;
-        })
-        .key(function (d) {
-            return d.Q2_GENDER;
-        })
-        .key(function (d) {
-            return d.Q3_AGE;
         }).sortKeys(d3.ascending)
-        .rollup(function (d,i) {
-            return {
-                butterfingers : d.map(function (d) {
-                    if (d.Q6_Butterfinger == "JOY") {
-                        joy++;
-                    } else if (d.Q6_Butterfinger == "DESPAIR") {
-                        joy--;
-                    }
-                    var joyname = joy;
-                    joy = 0;
-                    return joyname;
-                })
-            };
-        })
+        // .key(function (d) {
+        //     return d.Q2_GENDER;
+        // })
+        // .key(function (d) {
+        //     return d.Q3_AGE;
+        // }).sortKeys(d3.ascending)
+        // .rollup(function (d,i) {
+        //     return {
+        //         butterfingers : d.map(function (d) {
+        //             if (d.Q6_Butterfinger == "JOY") {
+        //                 joy++;
+        //             } else if (d.Q6_Butterfinger == "DESPAIR") {
+        //                 joy--;
+        //             }
+        //             var joyname = joy;
+        //             joy = 0;
+        //             return joyname;
+        //         })
+        //     };
+        // })
         .entries(dataset);
 
     console.log(data_by_state);
@@ -171,13 +169,13 @@ function setup() {
 
             if (gender == "Male") {
                 if (age <= 17 ) {
-                    candyCounter();
                     bin1Male++;
                 } else if (age <=34) {
                     bin2Male++;
                 } else if (age <= 59) {
                     bin3Male++;
                 } else {
+                    candyCounter();
                     bin4Male++;
                 }
             } else if (gender == "Female"){
@@ -195,23 +193,36 @@ function setup() {
 
     }
 
-    console.log(bin1Male);
-    console.log(bin2Male);
-    console.log(bin3Male);
-    console.log(bin4Male);
+    console.log(chocolateData);
 
-    console.log(bin1Female);
-    console.log(bin2Female);
-    console.log(bin3Female);
-    console.log(bin4Female);
+    // console.log(bin1Male);
+    // console.log(bin2Male);
+    // console.log(bin3Male);
+    // console.log(bin4Male);
+    //
+    // console.log(bin1Female);
+    // console.log(bin2Female);
+    // console.log(bin3Female);
+    // console.log(bin4Female);
 
 
 }
 
-// function candyCounter(){
-//     //filterNE[i].values[j].Q6_Butterfinger
-// }
-//
+// var Chocolate = ['Q6_Butterfinger', 'Q6_Heath_Bar', 'Q6_Hershey_s_Dark_Chocolate', 'Q6_Hershey_s_Milk_Chocolate',
+//     'Q6_Hershey_s_Kisses', 'Q6_Junior_Mints', 'Q6_Kit_Kat', 'Q6_Milk_Duds', 'Q6_Milky_Way', 'Q6_Regular_M_Ms',
+//     'Q6_Peanut_M_M_s', 'Q6_Mint_Kisses', 'Q6_Mr_Goodbar', 'Q6_Nestle_Crunch', 'Q6_Reese_s_Peanut_Butter_Cups',
+//     'Q6_Reese_s_Pieces', 'Q6_Rolos', 'Q6_Snickers', 'Q6_Three_Musketeers', 'Q6_Tolberone_something_or_other',
+//     'Q6_Twix', 'Q6_Whatchamacallit_Bar', 'Q6_York_Peppermint_Patties'];
+
+function candyCounter(){
+    var level = filterNE[i].values[j].Q6_Butterfinger;
+    if (level == "JOY") {
+        chocolateData++;
+    } else if(level == "DESPAIR") {
+        chocolateData--;
+    }
+}
+
 
 
 
