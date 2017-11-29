@@ -103,6 +103,10 @@ function get_category_joy(entry, category) {
   })
 }
 
+function get_joy_percentage(joy_value) {
+  return (joy_value + 1)/2.
+}
+
 d3.csv('./data/us_candy.csv', function(error, __dataset){
     if(error) {
         console.error('Error while loading candy csv dataset.');
@@ -284,7 +288,9 @@ function setup() {
     // console.log(bin2Female);
     // console.log(bin3Female);
     // console.log(bin4Female);
-
+    d3.graphScroll()
+        .sections(d3.selectAll('#sections > div'))
+        .on('active', function(i){ console.log(i + 'th section active') })
 
 }
 
