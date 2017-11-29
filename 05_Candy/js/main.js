@@ -23,7 +23,7 @@ var Chocolate = ['Q6_Butterfinger', 'Q6_Heath_Bar', 'Q6_Hershey_s_Dark_Chocolate
 'Q6_Hershey_s_Kisses', 'Q6_Junior_Mints', 'Q6_Kit_Kat', 'Q6_Milk_Duds', 'Q6_Milky_Way', 'Q6_Regular_M_Ms',
 'Q6_Peanut_M_M_s', 'Q6_Mint_Kisses', 'Q6_Mr_Goodbar', 'Q6_Nestle_Crunch', 'Q6_Reese_s_Peanut_Butter_Cups',
 'Q6_Reese_s_Pieces', 'Q6_Rolos', 'Q6_Snickers', 'Q6_Three_Musketeers', 'Q6_Tolberone_something_or_other',
-'Q6_Twix', 'Q6_Whatchamacallit_Bar', 'Q6_York_Peppermint_Patties'];
+'Q6_Twix', 'Q6_Whatchamacallit_Bars', 'Q6_York_Peppermint_Patties'];
 
 var Fruit = ['Q6_Fuzzy_Peaches', 'Q6_Gummy_Bears_straight_up', 'Q6_Jolly_Rancher_bad_flavor',
 'Q6_Jolly_Ranchers_good_flavor', 'Q6_LaffyTaffy', 'Q6_LemonHeads', 'Q6_Mike_and_Ike',
@@ -99,6 +99,8 @@ function get_joy_value(joy_string) {
 
 function get_category_joy(entry, category) {
   return d3.mean(category, function(d) {
+      //console.log(d);
+      console.log(entry[d]);
      return get_joy_value(entry[d]);
   })
 }
@@ -131,37 +133,13 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
           return d.Q2_GENDER;
         }).entries(dataset);
 
-    console.log(data_by_region_age_gender)
-    console.log(get_category_joy(dataset[0], Chocolate))
+    console.log(data_by_region_age_gender);
 
-    // data_by_state = d3.nest()
-    //     .key(function (d) {
-    //         //return d.Q3_AGE;
-    //         return d.Q5_STATE_PROVINCE_COUNTY_ETC;
-    //     }).sortKeys(d3.ascending)
-    //     // .key(function (d) {
-    //     //     return d.Q2_GENDER;
-    //     // })
-    //     // .key(function (d) {
-    //     //     return d.Q3_AGE;
-    //     // }).sortKeys(d3.ascending)
-    //     // .rollup(function (d,i) {
-    //     //     return {
-    //     //         butterfingers : d.map(function (d) {
-    //     //             if (d.Q6_Butterfinger == "JOY") {
-    //     //                 joy++;
-    //     //             } else if (d.Q6_Butterfinger == "DESPAIR") {
-    //     //                 joy--;
-    //     //             }
-    //     //             var joyname = joy;
-    //     //             joy = 0;
-    //     //             return joyname;
-    //     //         })
-    //     //     };
-    //     // })
-    //     .entries(dataset);
-    //
-    // console.log(data_by_state);
+    console.log(get_category_joy(dataset[0], Chocolate));
+
+    // for (var i=0; i<dataset.length; i++) {
+    //     console.log(get_category_joy(dataset[i], Chocolate))
+    // }
 
     /**
     Uncomment setup!!
@@ -170,46 +148,12 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
 });
 
 function setup() {
-    //
-    // filterNE = data_by_state.filter(function (d,i) {
-    //     if (Northeast.includes(d.key)) {
-    //         return d.key;
-    //     }
-    // });
 
-    // filterMW = data_by_state.filter(function (d,i) {
-    //     if (Midwest.includes(d.key)) {
-    //         return d.key;
-    //     }
-    // });
-    //
-    // filterS = data_by_state.filter(function (d,i) {
-    //     if (South.includes(d.key)) {
-    //         return d.key;
-    //     }
-    // });
-    //
-    // filterW = data_by_state.filter(function (d,i) {
-    //     if (West.includes(d.key)) {
-    //         return d.key;
-    //     }
-    // });
 
     console.log('Northeast');
     //console.log(Northeast.length);
     console.log(filterNE);
 
-    // console.log('Midwest');
-    // //console.log(Midwest.length);
-    // console.log(filterMW);
-    //
-    // console.log('South');
-    // //console.log(South.length);
-    // console.log(filterS);
-    //
-    // console.log('West');
-    // //console.log(West.length);
-    // console.log(filterW);
 
     /*
     Getting the NorthEast Data
