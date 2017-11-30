@@ -134,9 +134,10 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         })
         .key(function(d) {
           return d.Q2_GENDER;
-        }).entries(dataset);
-    //
-    //  console.log(data_by_region_age_gender);
+        }).sortKeys(d3.descending)
+        .entries(dataset);
+
+      console.log(data_by_region_age_gender);
     // console.log(get_category_joy(dataset[0], Trail_Mix));
     // console.log(get_category_joy(dataset[3], Trail_Mix));
     // console.log(get_category_joy(dataset[4], Trail_Mix));
@@ -156,60 +157,87 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         .enter()
         .append('g')
         .attr('class', 'groupRect1')
-    .attr('transform', 'translate(50,' + 475 + ')');
+    .attr('transform', 'translate(50,' + 330 + ')');
+
+    /*
+        X and Y axis for the bar chart
+     */
 
     yScale = d3.scaleLinear()
-        .domain([-1, 1])
-        .range([100,-100]);
+        .range([chartHeight,0])
+        .domain([-1, 1]);
+
+    xScale = d3.scaleLinear()
+        .range([0,chartWidth-50])
+        .domain([-1, 1]);
 
     groupRect1.append('g')
         .attr('class', 'yaxis')
         .call(d3.axisLeft(yScale));
 
+    groupRect1.append('g')
+        .attr('class', 'xaxis')
+        .call(d3.axisBottom(xScale).ticks(0))
+        .attr('transform', 'translate(0, 150)');
 
 
 
 
-
-
+    var c_arr = [];
 
     for (var a=0; a<1; a++) {
-        for (var b=0; b<1; b++) {
-            for (var c=0; c<1; c++) {
-                var choclate_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+        for (var b=0; b<data_by_region_age_gender[a].values.length; b++) {
+            for (var c=0; c<data_by_region_age_gender[a].values[b].values.length; c++) {
+                var num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
                     return get_category_joy(d, Chocolate);
                 });
-
-                var fruit_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
-                    return get_category_joy(d, Fruit);
-                });
-
-                var other_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
-                    return get_category_joy(d, Other);
-                });
-
-                var gum_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
-                    return get_category_joy(d, Gum);
-                });
-
-                var licorice_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
-                    return get_category_joy(d, Licorice);
-                });
-
-                var trail_mix_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
-                    return get_category_joy(d, Trail_Mix);
-                });
+                c_arr.push(num);
             }
         }
 
     }
 
-    console.log(choclate_mean);
-    console.log(fruit_mean);
-    console.log(other_mean);
-    console.log(gum_mean);
-    console.log(licorice_mean);
-    console.log(trail_mix_mean);
+    groupRect1.selectAll('rect')
+        .data(c_arr)
+        .enter()
+        .append('rect')
+        .attr('x', function (d,i) {
+            if (i<=1) {
+                return i*10 + 10;
+            } else if (i<=3) {
+                return i*10 + 30;
+            } else if (i<=5) {
+                return i*10 + 50;
+            } else {
+                return i*10 + 70;
+            }
+
+        })
+        .attr('y', function (d) {
+            if (d > 0) {
+                return yScale(d);
+            } else {
+                return yScale(0);
+            }
+        })
+        .attr('height', function (d) {
+            return Math.abs(yScale(d)- yScale(0));
+        })
+        .attr('width', 10)
+        .style('fill', function (d,i) {
+            if (i%2==0) {
+                return 'blue';
+            } else {
+                return 'pink';
+            }
+        });
+
+    // console.log(choclate_mean);
+    // console.log(fruit_mean);
+    // console.log(other_mean);
+    // console.log(gum_mean);
+    // console.log(licorice_mean);
+    // console.log(trail_mix_mean);
 
 
     // for (var a=0; a<data_by_region_age_gender.length; a++) {
@@ -248,6 +276,25 @@ function setup() {
 
 
 
+// var fruit_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+//     return get_category_joy(d, Fruit);
+// });
+//
+// var other_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+//     return get_category_joy(d, Other);
+// });
+//
+// var gum_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+//     return get_category_joy(d, Gum);
+// });
+//
+// var licorice_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+//     return get_category_joy(d, Licorice);
+// });
+//
+// var trail_mix_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+//     return get_category_joy(d, Trail_Mix);
+// });
 
 
 
