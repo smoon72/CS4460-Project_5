@@ -13,3 +13,8 @@ body {
     height: 300px;
     width: 500px;
 }
+
+.citiesName {
+    font-size: 30px;
+    font-weight: bold;
+}

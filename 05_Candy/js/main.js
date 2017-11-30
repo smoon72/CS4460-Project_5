@@ -314,6 +314,27 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
             }
         });
 
+    trellisG.append('text')
+        .attr('class', 'citiesName')
+        .attr('transform', 'translate(' + [170,40] + ')')
+        .text(function (d) {
+            if (d.key == 'Owest') {
+                return 'West'
+            }
+            return d.key;
+        });
+
+    // var region_label = trellisSelection.selectAll('.region_label')
+    //     .data(regions_names)
+    //     .enter()
+    //     .append('text')
+    //     .attr('class', 'region_label');
+    //
+    // region_label.attr('translate', 'transform(100,0)')
+    //     .text(function (d,i) {
+    //         return d;
+    //     });
+
     // console.log(choclate_mean);
     // console.log(fruit_mean);
     // console.log(other_mean);
