@@ -203,13 +203,13 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         .append('rect')
         .attr('x', function (d,i) {
             if (i<=1) {
-                return i*10 + 10;
+                return i*30 + 30;
             } else if (i<=3) {
-                return i*10 + 30;
+                return i*30 + 60;
             } else if (i<=5) {
-                return i*10 + 50;
+                return i*30 + 90;
             } else {
-                return i*10 + 70;
+                return i*30 + 120;
             }
 
         })
@@ -223,7 +223,7 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         .attr('height', function (d) {
             return Math.abs(yScale(d)- yScale(0));
         })
-        .attr('width', 10)
+        .attr('width', 30)
         .style('fill', function (d,i) {
             if (i%2==0) {
                 return 'blue';
