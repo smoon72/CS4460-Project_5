@@ -220,7 +220,7 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     /*
         Candy Selector
      */
-    var scroll_number = 5;
+    var scroll_number = 2;
 
 
     var candy_name = candy_categories_names[scroll_number];
@@ -248,8 +248,10 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
      */
 
     var all_array = [0,0,0,0,0,0,0,0];
+    var num_array = [0,0,0,0,0,0,0,0];
     for (var j=0; j<32; j++) {
         all_array[j%8] = all_array[j%8] + all_selected[j];
+        num_array[j%8] = num_array[j%8] + all_amount_selected[j];
     }
 
     for (var k =0; k<all_array.length; k++) {
@@ -272,10 +274,14 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         Rectangle
      */
 
-    var padding = {t: 10, r: 20, b: 10, l: 20};
+    var padding = {t: 10, r: 20, b: 10, l: 40};
     var dum = ['A', 'B', 'C', 'D'];
 
     var all = [1];
+
+    /*
+        Regions rectangle
+     */
 
     svg.selectAll('.background')
         .data(dum)
@@ -311,9 +317,9 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         .enter()
         .append('rect')
         .attr('class', 'all_rect')
-        .attr('width', chartWidth)
+        .attr('width', chartWidth-20)
         .attr('height', chartHeight)
-        .attr('transform', 'translate(1280,10)')
+        .attr('transform', 'translate(1300,10)')
         .style('fill', 'white');
 
     var all_rect = svg.selectAll('.all')
@@ -321,7 +327,7 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         .enter()
         .append('g')
         .attr('class', 'all')
-        .attr('transform','translate(1280,10)');
+        .attr('transform','translate(1300,10)');
 
 
     /*
@@ -329,21 +335,27 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
      */
 
     xAxis = d3.axisBottom(xScale).ticks(0);
+    yAxis = d3.axisLeft(yScale).ticks(4);
+
+    /*
+        Axes for Regions
+     */
     trellisG.append('g')
         .attr('class', 'x axis')
         .attr('transform', 'translate(10,' + (chartHeight/2-10) + ')')
         .call(xAxis);
+    trellisG.append('g')
+        .attr('class', 'y axis')
+        .attr('transform', 'translate(10,10)')
+        .call(yAxis);
+    /*
+     Axes for All
+     */
 
     all_rect.append('g')
         .attr('class', 'x axis')
         .attr('transform', 'translate(10,' + (chartHeight/2-10) + ')')
         .call(xAxis);
-
-    yAxis = d3.axisLeft(yScale);
-    trellisG.append('g')
-        .attr('class', 'y axis')
-        .attr('transform', 'translate(10,10)')
-        .call(yAxis);
 
     all_rect.append('g')
         .attr('class', 'y axis')
@@ -486,6 +498,26 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
             }
         });
 
+    all_Selection.selectAll('text')
+        .data(num_array)
+        .enter()
+        .append('text')
+        .attr('x',  function (d,i) {
+            //console.log(d);
+            if (i<=1) {
+                return i*40 + 30;
+            } else if (i<=3) {
+                return i*40 + 60;
+            } else if (i<=5) {
+                return i*40 + 90;
+            } else {
+                return i*40 + 120;
+            }
+        })
+        .text(function (d) {
+            return d;
+        })
+        .attr('transform', 'translate(13,205)');
 
 
 
