@@ -147,6 +147,16 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     var licorice_arr = [];
     var trail_mix_arr = [];
 
+    /*
+        Keep track of number of values
+     */
+    var choco_amount = [];
+    var fruit_amount = [];
+    var other_amount = [];
+    var gum_amount = [];
+    var licorice_amount = [];
+    var trail_mix_amount = [];
+
     for (var a=0; a<data_by_region_age_gender.length; a++) {
         for (var b=0; b<data_by_region_age_gender[a].values.length; b++) {
             for (var c=0; c<data_by_region_age_gender[a].values[b].values.length; c++) {
@@ -155,31 +165,42 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
                     return get_category_joy(d, Chocolate);
                 });
                 choco_arr.push(c_num);
+                choco_amount.push(data_by_region_age_gender[a].values[b].values[c].values.length);
 
                 var fruit_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
                     return get_category_joy(d, Fruit);
                 });
                 fruit_arr.push(fruit_num);
+                fruit_amount.push(data_by_region_age_gender[a].values[b].values[c].values.length);
+
 
                 var other_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
                     return get_category_joy(d, Other);
                 });
                 other_arr.push(other_num);
+                other_amount.push(data_by_region_age_gender[a].values[b].values[c].values.length);
+
 
                 var gum_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
                     return get_category_joy(d, Gum);
                 });
                 gum_arr.push(gum_num);
+                gum_amount.push(data_by_region_age_gender[a].values[b].values[c].values.length);
+
 
                 var licorice_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
                     return get_category_joy(d, Licorice);
                 });
                 licorice_arr.push(licorice_num);
+                licorice_amount.push(data_by_region_age_gender[a].values[b].values[c].values.length);
+
 
                 var trail_mix_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
                     return get_category_joy(d, Trail_Mix);
                 });
                 trail_mix_arr.push(trail_mix_num);
+                trail_mix_amount.push(data_by_region_age_gender[a].values[b].values[c].values.length);
+
 
 
             }
@@ -188,23 +209,39 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     }
 
     /*
-        Slcing data into its respective regions
+        Slicing data into its respective regions
      */
     var regions_names = ['NE', 'MW', 'W', 'S'];
     var categories_names = [choco_arr, fruit_arr, other_arr, gum_arr, licorice_arr, trail_mix_arr];
+    var categories_amount = [choco_amount, fruit_amount, other_amount, gum_amount, licorice_amount, trail_mix_amount];
     var candy_categories_names = ['Chocolate', 'Fruit', 'Other', 'Gum', 'Licorice', 'Trail_Mix'];
 
+
+    /*
+        Candy Selector
+     */
     var scroll_number = 5;
+
+
     var candy_name = candy_categories_names[scroll_number];
     var all_selected = categories_names[scroll_number];
+    var all_amount_selected = categories_amount[scroll_number];
 
     var bar_data = [];
     for (var i=0; i<4; i++) {
         bar_data.push({
             key: regions_names[i],
-            value: all_selected.slice(i*8 ,i*8+8)
+            value: {
+
+
+                bar_value: all_selected.slice(i * 8, i * 8 + 8),
+
+                amount_of_people: all_amount_selected.slice(i * 8, i * 8 + 8)
+
+            }
         });
     }
+    console.log(bar_data);
 
     /*
         Getting all the information into the all array
@@ -214,6 +251,7 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     for (var j=0; j<32; j++) {
         all_array[j%8] = all_array[j%8] + all_selected[j];
     }
+
     for (var k =0; k<all_array.length; k++) {
         all_array[k] = all_array[k]/4;
     }
@@ -275,7 +313,7 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         .attr('class', 'all_rect')
         .attr('width', chartWidth)
         .attr('height', chartHeight)
-        .attr('transform', 'translate(1300,10)')
+        .attr('transform', 'translate(1280,10)')
         .style('fill', 'white');
 
     var all_rect = svg.selectAll('.all')
@@ -283,7 +321,7 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         .enter()
         .append('g')
         .attr('class', 'all')
-        .attr('transform','translate(1300,10)');
+        .attr('transform','translate(1280,10)');
 
 
     /*
@@ -328,6 +366,7 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
             return 'translate(' + [tx, ty+5] + ')';
         });
 
+
     all_Selection = svg.selectAll('.allSelections')
         .data(all)
         .enter()
@@ -343,7 +382,7 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
      */
     trellisSelection.selectAll('rect')
         .data(function (d) {
-            return d.value;
+            return d.value.bar_value;
         })
         .enter()
         .append('rect')
@@ -371,11 +410,47 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         .attr('width', 40)
         .style('fill', function (d,i) {
             if (i%2==0) {
-                return 'blue';
+                return '#00BFFF';
             } else {
                 return 'pink';
             }
         });
+
+    trellisSelection.selectAll('text')
+        .data(function (d) {
+            return d.value.amount_of_people;
+        })
+        .enter()
+        .append('text')
+        .attr('x',  function (d,i) {
+            //console.log(d);
+            if (i<=1) {
+                return i*40 + 30;
+            } else if (i<=3) {
+                return i*40 + 60;
+            } else if (i<=5) {
+                return i*40 + 90;
+            } else {
+                return i*40 + 120;
+            }
+        })
+        .text(function (d) {
+            return d;
+        })
+        .attr('transform', 'translate(13,205)');
+        // .style('fill', function (d,i) {
+        //     if (i%2 == 0) {
+        //         return 'white'
+        //     }
+        // });
+
+
+
+
+
+
+
+
 
     all_Selection.selectAll('rect')
         .data(all_array)
@@ -405,7 +480,7 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         .attr('width', 40)
         .style('fill', function (d,i) {
             if (i%2==0) {
-                return 'blue';
+                return '#00BFFF';
             } else {
                 return 'pink';
             }
