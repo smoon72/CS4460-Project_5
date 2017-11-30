@@ -50,8 +50,6 @@ var dataset = null;
 
 var data_by_region_age_gender = null;
 
-
-
 function get_candy_category(candy_string) {
   if (Chocolate.includes(candy_string)) {
     return "Chocolate";
@@ -194,12 +192,17 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
      */
     var regions_names = ['NE', 'MW', 'W', 'S'];
     var categories_names = [choco_arr, fruit_arr, other_arr, gum_arr, licorice_arr, trail_mix_arr];
+    var candy_categories_names = ['Chocolate', 'Fruit', 'Other', 'Gum', 'Licorice', 'Trail_Mix'];
+
+    var scroll_number = 5;
+    var candy_name = candy_categories_names[scroll_number];
+    var all_selected = categories_names[scroll_number];
 
     var bar_data = [];
     for (var i=0; i<4; i++) {
         bar_data.push({
             key: regions_names[i],
-            value: categories_names[5].slice(i*8 ,i*8+8)
+            value: all_selected.slice(i*8 ,i*8+8)
         });
     }
 
@@ -207,7 +210,6 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         Getting all the information into the all array
      */
 
-    var all_selected = categories_names[5];
     var all_array = [0,0,0,0,0,0,0,0];
     for (var j=0; j<32; j++) {
         all_array[j%8] = all_array[j%8] + all_selected[j];
@@ -429,6 +431,17 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
             }
             return d.key;
         });
+
+    all_Selection.append('text')
+        .attr('class', 'citiesName')
+        .attr('transform', 'translate(' + [170,40] + ')')
+        .text('All');
+
+    all_Selection.append('text')
+        .attr('class', 'citiesName')
+        .attr('transform', 'translate(' + [170,500] + ')')
+        .text(candy_name);
+
 
 
 
