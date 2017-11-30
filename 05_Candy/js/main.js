@@ -7,8 +7,8 @@ var svg = d3.select('svg');
 var svgWidth = +svg.attr('width');
 var svgHeight = +svg.attr('height');
 
-var chartWidth = 500;
-var chartHeight = 300;
+var chartWidth = 600;
+var chartHeight = 460;
 
 var Northeast = ['Connecticut', 'Maine', 'Massachusetts', 'New Hampshire', 'New Jersey', 'New York', 'Pennsylvania',
     'Rhode Island', 'Vermont'];
@@ -73,12 +73,11 @@ function get_region(state) {
     return "Northeast";
   } else if (Midwest.includes(state)) {
     return "Midwest";
-  } else if (South.includes(state)) {
-    return "South";
   } else if (West.includes(state)) {
-    return "West";
+    return "Owest";
+  } else if (South.includes(state)) {
+      return "South";
   }
-  return "NA";
 }
 
 function get_age_group(age) {
@@ -128,7 +127,7 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     data_by_region_age_gender = d3.nest()
         .key(function(d) {
           return get_region(d.Q5_STATE_PROVINCE_COUNTY_ETC);
-        })
+        }).sortKeys(d3.ascending)
         .key(function(d) {
           return get_age_group(d.Q3_AGE);
         })
@@ -143,75 +142,158 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     // console.log(get_category_joy(dataset[4], Trail_Mix));
     // console.log(get_category_joy(dataset[7], Trail_Mix));
 
-    var dum =[1];
+    var choco_arr = [];
+    var fruit_arr = [];
+    var other_arr = [];
+    var gum_arr = [];
+    var licorice_arr = [];
+    var trail_mix_arr = [];
 
-    var hrect1 = svg.selectAll('.hrect1')
-        .data(dum)
-        .enter()
-        .append('rect')
-        .attr('class', 'hrect1')
-        .attr('transform', 'translate(10, 300)');
-
-    var groupRect1 = svg.selectAll('.groupRect1')
-        .data(dum)
-        .enter()
-        .append('g')
-        .attr('class', 'groupRect1')
-    .attr('transform', 'translate(50,' + 330 + ')');
-
-    /*
-        X and Y axis for the bar chart
-     */
-
-    yScale = d3.scaleLinear()
-        .range([chartHeight,0])
-        .domain([-1, 1]);
-
-    xScale = d3.scaleLinear()
-        .range([0,chartWidth-50])
-        .domain([-1, 1]);
-
-    groupRect1.append('g')
-        .attr('class', 'yaxis')
-        .call(d3.axisLeft(yScale));
-
-    groupRect1.append('g')
-        .attr('class', 'xaxis')
-        .call(d3.axisBottom(xScale).ticks(0))
-        .attr('transform', 'translate(0, 150)');
-
-
-
-
-    var c_arr = [];
-
-    for (var a=0; a<1; a++) {
+    for (var a=0; a<data_by_region_age_gender.length; a++) {
         for (var b=0; b<data_by_region_age_gender[a].values.length; b++) {
             for (var c=0; c<data_by_region_age_gender[a].values[b].values.length; c++) {
-                var num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+
+                var c_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
                     return get_category_joy(d, Chocolate);
                 });
-                c_arr.push(num);
+                choco_arr.push(c_num);
+
+                var fruit_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+                    return get_category_joy(d, Fruit);
+                });
+                fruit_arr.push(fruit_num);
+
+                var other_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+                    return get_category_joy(d, Other);
+                });
+                other_arr.push(other_num);
+
+                var gum_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+                    return get_category_joy(d, Gum);
+                });
+                gum_arr.push(gum_num);
+
+                var licorice_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+                    return get_category_joy(d, Licorice);
+                });
+                licorice_arr.push(licorice_num);
+
+                var trail_mix_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+                    return get_category_joy(d, Trail_Mix);
+                });
+                trail_mix_arr.push(trail_mix_num);
+
+
             }
         }
 
     }
 
-    groupRect1.selectAll('rect')
-        .data(c_arr)
+    var regions_names = ['NE', 'MW', 'W', 'S'];
+    var categories_names = [choco_arr, fruit_arr, other_arr, gum_arr, licorice_arr, trail_mix_arr];
+
+    var bar_data = [];
+    for (var i=0; i<4; i++) {
+        bar_data.push({
+            key: regions_names[i],
+            value: categories_names[0].slice(i*8 ,i*8+8)
+        });
+    }
+
+    /*
+     X and Y axis for the bar chart
+     */
+
+    yScale = d3.scaleLinear()
+        .range([chartHeight-40,0])
+        .domain([-1, 1]);
+
+    xScale = d3.scaleLinear()
+        .range([0,chartWidth-170])
+        .domain([-1, 1]);
+
+    /*
+        Rectangle
+     */
+
+    var padding = {t: 10, r: 20, b: 10, l: 20};
+    var dum = ['A', 'B', 'C', 'D'];
+
+    svg.selectAll('.background')
+        .data(dum)
         .enter()
         .append('rect')
-        .attr('x', function (d,i) {
-            if (i<=1) {
-                return i*30 + 30;
-            } else if (i<=3) {
-                return i*30 + 60;
-            } else if (i<=5) {
-                return i*30 + 90;
-            } else {
-                return i*30 + 120;
-            }
+        .attr('class', 'background')
+        .attr('width', chartWidth)
+        .attr('height', chartHeight)
+        .attr('transform', function(d, i) {
+            var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
+            var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t;
+            return 'translate('+[tx, ty]+')';
+        })
+        .style('fill', 'white');
 
+    var trellisG = svg.selectAll('.trellis')
+        .data(data_by_region_age_gender)
+        .enter()
+        .append('g')
+        .attr('class', 'trellis')
+        .attr('transform', function (d, i) {
+            // Use indices to space out the trellis groups in 2x2 matrix
+            var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
+            var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t;
+            return 'translate(' + [tx, ty] + ')';
+        });
+
+
+    /*
+        Y and X Axis
+     */
+
+    xAxis = d3.axisBottom(xScale).ticks(0);
+    trellisG.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(10,' + (chartHeight/2-10) + ')')
+        .call(xAxis);
+
+    yAxis = d3.axisLeft(yScale);
+    trellisG.append('g')
+        .attr('class', 'y axis')
+        .attr('transform', 'translate(10,10)')
+        .call(yAxis);
+
+    /*
+        Appending the rectangles
+     */
+
+    trellisSelection = svg.selectAll('.tSelections')
+        .data(bar_data)
+        .enter()
+        .append('g')
+        .attr('class', 'tSelections')
+        .attr('transform', function (d, i) {
+            // Use indices to space out the trellis groups in 2x2 matrix
+            var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
+            var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t + 5;
+            return 'translate(' + [tx, ty+5] + ')';
+        });
+
+    trellisSelection.selectAll('rect')
+        .data(function (d) {
+            return d.value;
+        })
+        .enter()
+        .append('rect')
+        .attr('x',  function (d,i) {
+            if (i<=1) {
+                return i*30 + 20;
+            } else if (i<=3) {
+                return i*30 + 40;
+            } else if (i<=5) {
+                return i*30 + 60;
+            } else {
+                return i*30 + 80;
+            }
         })
         .attr('y', function (d) {
             if (d > 0) {
@@ -238,63 +320,11 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     // console.log(gum_mean);
     // console.log(licorice_mean);
     // console.log(trail_mix_mean);
-
-
-    // for (var a=0; a<data_by_region_age_gender.length; a++) {
-    //     for (var b=0; b<data_by_region_age_gender[a].values.length; b++) {
-    //         for (var c=0; c<data_by_region_age_gender[a].values[b].values.length; c++) {
-    //             for (var d=0; d<data_by_region_age_gender[a].values[b].values[c].values.length; d++) {
-    //
-    //
-    //             }
-    //         }
-    //     }
-    // }
-
-
-    /**
-    Uncomment setup!!
-    **/
-    //setup();
 });
 
-function setup() {
-    console.log(chocolateData);
-    d3.graphScroll()
-        .sections(d3.selectAll('#sections > div'))
-        .on('active', function(i){ console.log(i + 'th section active') })
-
-}
 
 
 
-
-
-
-
-
-
-
-
-// var fruit_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
-//     return get_category_joy(d, Fruit);
-// });
-//
-// var other_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
-//     return get_category_joy(d, Other);
-// });
-//
-// var gum_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
-//     return get_category_joy(d, Gum);
-// });
-//
-// var licorice_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
-//     return get_category_joy(d, Licorice);
-// });
-//
-// var trail_mix_mean = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
-//     return get_category_joy(d, Trail_Mix);
-// });
 
 
 
