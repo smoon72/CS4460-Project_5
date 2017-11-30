@@ -2,6 +2,14 @@
     Four Regions across US
     Note about data, Delware not in
  */
+
+var svg = d3.select('svg');
+var svgWidth = +svg.attr('width');
+var svgHeight = +svg.attr('height');
+
+var chartWidth = 500;
+var chartHeight = 300;
+
 var Northeast = ['Connecticut', 'Maine', 'Massachusetts', 'New Hampshire', 'New Jersey', 'New York', 'Pennsylvania',
     'Rhode Island', 'Vermont'];
 
@@ -37,10 +45,6 @@ var Gum = ['Q6_Chiclets', 'Q6_Dots', 'Q6_Tic_Tacs'];
 var Licorice = ['Q6_Good_N_Plenty', 'Q6_Licorice_not_black', 'Q6_Licorice_yes_black'];
 
 var Trail_Mix = ['Q6_Trail_Mix'];
-
-
-
-var chocolateData = 0;
 
 var dataset = null;
 
@@ -119,10 +123,9 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
 
     var i = 0;
     //console.log(__dataset);
-    dataset = __dataset
+    dataset = __dataset;
 
-    data_by_region_age_gender =
-      d3.nest()
+    data_by_region_age_gender = d3.nest()
         .key(function(d) {
           return get_region(d.Q5_STATE_PROVINCE_COUNTY_ETC);
         })
@@ -133,11 +136,41 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
           return d.Q2_GENDER;
         }).entries(dataset);
     //
-     console.log(data_by_region_age_gender);
-    console.log(get_category_joy(dataset[0], Trail_Mix));
-    console.log(get_category_joy(dataset[3], Trail_Mix));
-    console.log(get_category_joy(dataset[4], Trail_Mix));
-    console.log(get_category_joy(dataset[7], Trail_Mix));
+    //  console.log(data_by_region_age_gender);
+    // console.log(get_category_joy(dataset[0], Trail_Mix));
+    // console.log(get_category_joy(dataset[3], Trail_Mix));
+    // console.log(get_category_joy(dataset[4], Trail_Mix));
+    // console.log(get_category_joy(dataset[7], Trail_Mix));
+
+    var dum =[1];
+
+    var hrect1 = svg.selectAll('.hrect1')
+        .data(dum)
+        .enter()
+        .append('rect')
+        .attr('class', 'hrect1')
+        .attr('transform', 'translate(10, 300)');
+
+    var groupRect1 = svg.selectAll('.groupRect1')
+        .data(dum)
+        .enter()
+        .append('g')
+        .attr('class', 'groupRect1')
+    .attr('transform', 'translate(50,' + 475 + ')');
+
+    yScale = d3.scaleLinear()
+        .domain([-1, 1])
+        .range([100,-100]);
+
+    groupRect1.append('g')
+        .attr('class', 'yaxis')
+        .call(d3.axisLeft(yScale));
+
+
+
+
+
+
 
 
     for (var a=0; a<1; a++) {

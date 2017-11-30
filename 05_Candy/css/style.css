@@ -5,3 +5,11 @@
 body {
     font-family: "Open Sans";
 }
+
+.hrect1
+{
+    fill: white;
+    stroke: black;
+    height: 350px;
+    width: 500px;
+}
