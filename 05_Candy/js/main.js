@@ -140,6 +140,7 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     console.log(get_category_joy(dataset[7], Trail_Mix));
 
 
+    //probably want to iterate by keys
     for (var a=0; a<1; a++) {
         for (var b=0; b<1; b++) {
             for (var c=0; c<1; c++) {
@@ -191,17 +192,17 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     // }
 
 
-    /**
-    Uncomment setup!!
-    **/
     //setup();
+    d3.graphScroll(0)
+    	.graph(d3.selectAll('#graph'))
+    	.container(d3.select('#container'))
+      .sections(d3.selectAll('#sections > div'))
+      .on('active', function(i){ console.log(i + 'th section active') })
+
 });
 
 function setup() {
     console.log(chocolateData);
-    d3.graphScroll()
-        .sections(d3.selectAll('#sections > div'))
-        .on('active', function(i){ console.log(i + 'th section active') })
 
 }
 
