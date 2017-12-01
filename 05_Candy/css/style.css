@@ -47,13 +47,13 @@ h2 {
 }
 
 #sections{
-  width: 340px;
+  width: 240px;
 
 }
 
 #graph{
   width: 500px;
-  margin-left: 380px;
+  margin-left: 220px;
   position: absolute;
   top: 10px;
 }
@@ -87,5 +87,11 @@ rect {
      fill: transparent;
      opacity: 0.5;
  }
+
+.labels {
+    font-size: 18px;
+
+    font-weight: bold;
+}
 
 
