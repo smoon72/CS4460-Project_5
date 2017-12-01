@@ -110,6 +110,7 @@ function get_joy_percentage(joy_value) {
   return (joy_value + 1)/2.
 }
 
+var candy_counter = 0;
 d3.csv('./data/us_candy.csv', function(error, __dataset){
     if(error) {
         console.error('Error while loading candy csv dataset.');
@@ -207,8 +208,11 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     	.graph(d3.selectAll('#graph'))
     	.container(d3.select('#container'))
       .sections(d3.selectAll('#sections > div'))
-      .on('active', function(i){ console.log(i + 'th section active') })
-    
+      .on('active', function(i){
+          candy_counter = i;
+          console.log(i + 'th section active') ;
+      })
+
     /*
         Slicing data into its respective regions
      */
@@ -221,7 +225,9 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     /*
         Candy Selector
      */
-    var scroll_number = 2;
+    var scroll_number = candy_counter;
+    console.log(candy_counter);
+    console.log(scroll_number);
 
 
     var candy_name = candy_categories_names[scroll_number];
@@ -456,14 +462,6 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         //         return 'white'
         //     }
         // });
-
-
-
-
-
-
-
-
 
     all_Selection.selectAll('rect')
         .data(all_array)

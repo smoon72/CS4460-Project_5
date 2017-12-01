@@ -6,7 +6,6 @@ body {
     font-family: "Open Sans";
 }
 
-<<<<<<< HEAD
 #sections > div{
 	opacity: .3;
   margin-bottom: 600px;
@@ -42,7 +41,7 @@ h1{
   position: absolute;
   bottom: 0px;
 }
-=======
+
 .hrect1
 {
     fill: white;
@@ -57,4 +56,4 @@ h1{
 }
 
 .axis { font: 18px sans-serif; }
->>>>>>> bar_chart_test
+
