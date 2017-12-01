@@ -253,7 +253,7 @@ function drawMeanChart(scroll_number) {
   console.log(scroll_number);
 
 
-  var candy_name = candy_categories_names[scroll_number];
+  var candy_name = [candy_categories_names[scroll_number]];
   var all_selected = categories_names[scroll_number];
   var all_amount_selected = categories_amount[scroll_number];
 
@@ -400,7 +400,7 @@ function drawMeanChart(scroll_number) {
 
   trellisSelection = svg.selectAll('.tSelections')
       .remove()
-			.exit()
+      .exit()
       .data(bar_data)
       .enter()
       .append('g')
@@ -484,16 +484,21 @@ function drawMeanChart(scroll_number) {
           return d;
       })
       .attr('transform', 'translate(13,205)');
-      // .style('fill', function (d,i) {
-      //     if (i%2 == 0) {
-      //         return 'white'
-      //     }
-      // });
 
-  all_Selection.selectAll('rect')
-      .data(all_array)
-      .enter()
-      .append('rect')
+    all_r = svg.selectAll('.r')
+        .data(all_array);
+
+  all_rEnter = all_r.enter()
+        .append('g')
+        .attr('class', 'r')
+        .attr('transform', 'translate(1300,20)');
+
+
+   all_rEnter.append('rect');
+
+   all_r.merge(all_rEnter)
+       .transition()
+       .select('rect')
       .attr('x',  function (d,i) {
           if (i<=1) {
               return i*40 + 30;
@@ -546,12 +551,6 @@ function drawMeanChart(scroll_number) {
       .attr('transform', 'translate(13,205)');
 
 
-
-
-
-
-
-
   /*
       Labels on the graph
    */
@@ -570,10 +569,37 @@ function drawMeanChart(scroll_number) {
       .attr('transform', 'translate(' + [170,40] + ')')
       .text('All');
 
-  all_Selection.append('text')
-      .attr('class', 'citiesName')
-      .attr('transform', 'translate(' + [170,500] + ')')
-      .text(candy_name);
+
+
+
+
+    all_t = svg.selectAll('.candyName')
+        .data(candy_name);
+
+    all_tEnter = all_t.enter()
+        .append('g')
+        .attr('class', 'candyName')
+        .attr('transform', 'translate(1450,530)');
+
+
+    all_tEnter.append('text');
+
+    all_t.merge(all_tEnter)
+        .transition()
+        .select('text')
+        .text(function (d) {
+            return d;
+        });
+
+
+
+
+  //
+  //
+  // all_Selection.append('text')
+  //     .attr('class', 'citiesName')
+  //     .attr('transform', 'translate(' + [170,500] + ')')
+  //     .text(candy_name);
 
 
 
