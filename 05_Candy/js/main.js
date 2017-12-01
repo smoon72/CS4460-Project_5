@@ -527,18 +527,19 @@ function drawMeanChart(scroll_number) {
 
     trellisSelection2.merge(trellisSelectionEnter)
         .select('text')
-        .attr('x', 43   0)
+        .attr('x', 430)
         .attr('y', 30)
         .text(function (d,i) {
             return Math.round(formatNoPercentage(d.toFixed(2))) + '%';
         })
 
-  trellisSelection.selectAll('text')
+  trellisSelection.selectAll('.textAmount')
       .data(function (d) {
           return d.value.amount_of_people;
       })
       .enter()
       .append('text')
+      .attr('class', 'textAmount')
       .attr('x',  function (d,i) {
           //console.log(d);
           if (i<=1) {
