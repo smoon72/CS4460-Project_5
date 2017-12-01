@@ -100,3 +100,10 @@ rect {
 .rrr:hover text {
     visibility: visible;
 }
+
+#last {
+    width: 1000px;
+    text-align: center;
+    margin-left: 450px;
+
+}
