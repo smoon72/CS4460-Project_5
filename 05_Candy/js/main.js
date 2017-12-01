@@ -1,34 +1,6 @@
 // var ul = document.createElement('ul');
 // ul.setAttribute('id','proList');
 //
-
-
-
-// var node = document.createElement("LI");                 // Create a <li> node
-// var textnode = document.createTextNode("Water");         // Create a text node
-//
-// node.appendChild(textnode);
-//
-// var newUl = document.createElement("ol");
-// var br = document.createElement("br");
-//
-// for (var c=0; c<Chocolate.length; c++) {
-//     var s = Chocolate[c];
-//
-//     newUl.appendChild(document.createTextNode(s));
-//     newUl.appendChild(br);
-// }
-
-//newUl.appendChild(textnode);
-
-//var choco = document.getElementById("chocolate").appendChild(newUl);
-
-
-
-//
-// //var h1s = document.getElementsByTagName("h1").appendChild('ul');
-// //console.log(h1s);
-
 /*
     Four Regions across US
     Note about data, Delware not in
@@ -40,6 +12,19 @@ var svgHeight = +svg.attr('height');
 
 var chartWidth = 450;
 var chartHeight = 460;
+
+/*
+ X and Y axis for the bar chart
+ */
+
+yScale = d3.scaleLinear()
+    .range([chartHeight-40,0])
+    .domain([-1, 1]);
+
+xScale = d3.scaleLinear()
+    .range([0,chartWidth-20])
+    .domain([-1, 1]);
+
 
 var Northeast = ['Connecticut', 'Maine', 'Massachusetts', 'New Hampshire', 'New Jersey', 'New York', 'Pennsylvania',
     'Rhode Island', 'Vermont'];
@@ -255,6 +240,116 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
       categories_amount = [choco_amount, fruit_amount, other_amount, gum_amount, licorice_amount, trail_mix_amount];
       candy_categories_names = ['Chocolate', 'Fruit', 'Other', 'Gum', 'Licorice', 'Trail_Mix'];
 
+    /*
+     Rectangle
+     */
+
+    padding = {t: 10, r: 20, b: 10, l: 40};
+    dum = ['A', 'B', 'C', 'D'];
+
+     all = [1];
+
+    /*
+     Regions rectangle
+     */
+
+    svg.selectAll('.background')
+        .data(dum)
+        .enter()
+        .append('rect')
+        .attr('class', 'background')
+        .attr('width', chartWidth)
+        .attr('height', chartHeight)
+        .attr('transform', function(d, i) {
+            var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
+            var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t;
+            return 'translate('+[tx, ty]+')';
+        })
+        .style('fill', 'white');
+
+    trellisG = svg.selectAll('.trellis')
+        .data(data_by_region_age_gender)
+        .enter()
+        .append('g')
+        .attr('class', 'trellis')
+        .attr('transform', function (d, i) {
+            // Use indices to space out the trellis groups in 2x2 matrix
+            var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
+            var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t;
+            return 'translate(' + [tx+20, ty] + ')';
+        });
+
+    /*
+     All category rectangle
+     */
+    svg.selectAll('.all_rect')
+        .data(all)
+        .enter()
+        .append('rect')
+        .attr('class', 'all_rect')
+        .attr('width', chartWidth-20)
+        .attr('height', chartHeight)
+        .attr('transform', 'translate(1000,10)')
+        .style('fill', 'white');
+    all_rect = svg.selectAll('.all')
+        .data(all)
+        .enter()
+        .append('g')
+        .attr('class', 'all')
+        .attr('transform','translate(1100,10)');
+
+
+    /*
+     Y and X Axis
+     */
+
+    xAxis = d3.axisBottom(xScale).ticks(0);
+    yAxis = d3.axisLeft(yScale).ticks(4).tickFormat(formatPercent);
+
+    /*
+     Axes for Regions
+     */
+    trellisG.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(10,' + (chartHeight/2-10) + ')')
+        .call(xAxis);
+    trellisG.append('g')
+        .attr('class', 'y axis')
+        .attr('transform', 'translate(10,10)')
+        .call(yAxis);
+    /*
+     Axes for All
+     */
+
+    all_rect.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(10,' + (chartHeight/2-10) + ')')
+        .call(xAxis);
+
+    all_rect.append('g')
+        .attr('class', 'y axis')
+        .attr('transform', 'translate(10,' + 10 + ')')
+        .call(yAxis);
+
+    /*
+     Labels on the graph
+     */
+    trellisG.append('text')
+        .attr('class', 'citiesName')
+        .attr('transform', 'translate(' + [170,40] + ')')
+        .text(function (d) {
+            if (d.key == 'Owest') {
+                return 'West'
+            }
+            return d.key;
+        });
+
+    all_rect.append('text')
+        .attr('class', 'citiesName')
+        .attr('transform', 'translate(' + [170,30] + ')')
+        .text('All Regions');
+
+
       d3.graphScroll(0)
       	.graph(d3.selectAll('#graph'))
       	.container(d3.select('#container'))
@@ -273,11 +368,13 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
 });
 
 
+
+
+
 function drawMeanChart(scroll_number) {
   /*
       Candy Selector
    */
-
 
   var candy_name = [candy_categories_names[scroll_number]];
   var all_selected = categories_names[scroll_number];
@@ -316,109 +413,7 @@ function drawMeanChart(scroll_number) {
       all_array[k] = all_array[k]/4;
   }
 
-  /*
-   X and Y axis for the bar chart
-   */
 
-  yScale = d3.scaleLinear()
-      .range([chartHeight-40,0])
-      .domain([-1, 1]);
-
-  xScale = d3.scaleLinear()
-      .range([0,chartWidth-20])
-      .domain([-1, 1]);
-
-  /*
-      Rectangle
-   */
-
-  var padding = {t: 10, r: 20, b: 10, l: 40};
-  var dum = ['A', 'B', 'C', 'D'];
-
-  var all = [1];
-
-  /*
-      Regions rectangle
-   */
-
-  svg.selectAll('.background')
-      .data(dum)
-      .enter()
-      .append('rect')
-      .attr('class', 'background')
-      .attr('width', chartWidth)
-      .attr('height', chartHeight)
-      .attr('transform', function(d, i) {
-          var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
-          var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t;
-          return 'translate('+[tx, ty]+')';
-      })
-      .style('fill', 'white');
-
-  var trellisG = svg.selectAll('.trellis')
-      .data(data_by_region_age_gender)
-      .enter()
-      .append('g')
-      .attr('class', 'trellis')
-      .attr('transform', function (d, i) {
-          // Use indices to space out the trellis groups in 2x2 matrix
-          var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
-          var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t;
-          return 'translate(' + [tx+20, ty] + ')';
-      });
-
-  /*
-      All category rectangle
-   */
-  svg.selectAll('.all_rect')
-      .data(all)
-      .enter()
-      .append('rect')
-      .attr('class', 'all_rect')
-      .attr('width', chartWidth-20)
-      .attr('height', chartHeight)
-      .attr('transform', 'translate(1000,10)')
-      .style('fill', 'white');
-
-  var all_rect = svg.selectAll('.all')
-      .data(all)
-      .enter()
-      .append('g')
-      .attr('class', 'all')
-      .attr('transform','translate(1100,10)');
-
-
-  /*
-      Y and X Axis
-   */
-
-  xAxis = d3.axisBottom(xScale).ticks(0);
-  yAxis = d3.axisLeft(yScale).ticks(4).tickFormat(formatPercent);
-
-  /*
-      Axes for Regions
-   */
-  trellisG.append('g')
-      .attr('class', 'x axis')
-      .attr('transform', 'translate(10,' + (chartHeight/2-10) + ')')
-      .call(xAxis);
-  trellisG.append('g')
-      .attr('class', 'y axis')
-      .attr('transform', 'translate(10,10)')
-      .call(yAxis);
-  /*
-   Axes for All
-   */
-
-  all_rect.append('g')
-      .attr('class', 'x axis')
-      .attr('transform', 'translate(10,' + (chartHeight/2-10) + ')')
-      .call(xAxis);
-
-  all_rect.append('g')
-      .attr('class', 'y axis')
-      .attr('transform', 'translate(10,' + 10 + ')')
-      .call(yAxis);
 
   /*
       Appending the group to the rectangles
@@ -496,7 +491,7 @@ function drawMeanChart(scroll_number) {
         .attr('x', 430)
         .attr('y', 30)
         .text(function (d,i) {
-            console.log(d);
+            //console.log(d);
             return Math.round(formatNoPercentage(d.toFixed(2))) + '%';
         });
 
@@ -681,23 +676,7 @@ function drawMeanChart(scroll_number) {
     })
     .attr('transform', 'translate(0,205)');
 
-  /*
-      Labels on the graph
-   */
-  trellisG.append('text')
-      .attr('class', 'citiesName')
-      .attr('transform', 'translate(' + [170,40] + ')')
-      .text(function (d) {
-          if (d.key == 'Owest') {
-              return 'West'
-          }
-          return d.key;
-      });
 
-  all_Selection.append('text')
-      .attr('class', 'citiesName')
-      .attr('transform', 'translate(' + [170,30] + ')')
-      .text('All Regions');
 }
 
 function drawMeanUpdate(scroll_number) {
