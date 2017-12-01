@@ -20,3 +20,8 @@ body {
 }
 
 .axis { font: 18px sans-serif; }
+
+.r {
+    fill: transparent;
+    opacity: 0.5;
+}
