@@ -227,18 +227,13 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
       	.container(d3.select('#container'))
         .sections(d3.selectAll('#sections > div'))
         .on('active', function(i){
-            drawMeanChart(i)
-            console.log(i + 'th section active') ;
+            if (i<6) {
+                drawMeanChart(i)
+                console.log(i + 'th section active') ;
+            }
+
         })
-
-
       drawMeanChart(0)
-
-
-
-
-
-
 
 });
 
