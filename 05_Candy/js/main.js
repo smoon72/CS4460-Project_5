@@ -255,19 +255,18 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
       categories_amount = [choco_amount, fruit_amount, other_amount, gum_amount, licorice_amount, trail_mix_amount];
       candy_categories_names = ['Chocolate', 'Fruit', 'Other', 'Gum', 'Licorice', 'Trail_Mix'];
 
-
-
-
       d3.graphScroll(0)
       	.graph(d3.selectAll('#graph'))
       	.container(d3.select('#container'))
         .sections(d3.selectAll('#sections > div'))
         .on('active', function(i){
             if (i<6) {
-                drawMeanChart(i)
+                drawMeanChart(i);
+                console.log(i + 'th section active') ;
+            } else {
+                drawMeanChart(3);
                 console.log(i + 'th section active') ;
             }
-
         })
       drawMeanChart(0)
 
@@ -275,9 +274,6 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
 
 
 function drawMeanChart(scroll_number) {
-
-
-
   /*
       Candy Selector
    */
@@ -436,23 +432,6 @@ function drawMeanChart(scroll_number) {
         .attr('class', 'allSelections')
         .attr('transform', 'translate(1100,20)');
 
-
-
-
-    // trellisSelection = svg.selectAll('.tSelections')
-    //   .data(bar_data)
-    //   .enter()
-    //   .append('g')
-    //   .attr('class', 'tSelections')
-    //   .attr('transform', function (d, i) {
-    //       // Use indices to space out the trellis groups in 2x2 matrix
-    //       var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
-    //       var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t + 5;
-    //       return 'translate(' + [tx, ty+5] + ')';
-    //   });
-
-    //var test = bar_data.value.bar_value;
-
     trellisSelection = svg.selectAll('.tSelections')
         .data(bar_data);
     trellisSelectionEnter = trellisSelection.enter()
@@ -470,7 +449,9 @@ function drawMeanChart(scroll_number) {
     trellisSelection.merge(trellisSelectionEnter)
         .select('g');
 
-
+    /*
+     Appending the rectangles
+     */
 
     trellisSelection2 = trellisSelection.selectAll('.rrr')
         .data(function (d) {
@@ -484,15 +465,6 @@ function drawMeanChart(scroll_number) {
     trellisSelection2.merge(trellisSelectionEnter)
         .transition()
         .select('rect')
-        /*
-            Appending the rectangles
-         */
-  // trellisSelection.selectAll('rect')
-  //     .data(function (d) {
-  //         return d.value.bar_value;
-  //     })
-  //     .enter()
-  //     .append('rect')
       .attr('x',  function (d,i) {
           //console.log(d)
           if (i<=1) {
@@ -627,29 +599,6 @@ function drawMeanChart(scroll_number) {
     })
     .attr('transform', 'translate(0,205)');
 
-
-  // all_Selection.selectAll('text')
-  //     .data(num_array)
-  //     .enter()
-  //     .append('text')
-  //     .attr('x',  function (d,i) {
-  //         //console.log(d);
-  //         if (i<=1) {
-  //             return i*40 + 30;
-  //         } else if (i<=3) {
-  //             return i*40 + 60;
-  //         } else if (i<=5) {
-  //             return i*40 + 90;
-  //         } else {
-  //             return i*40 + 120;
-  //         }
-  //     })
-  //     .text(function (d) {
-  //         return d;
-  //     })
-  //     .attr('transform', 'translate(90,205)');
-
-
   /*
       Labels on the graph
    */
@@ -665,12 +614,9 @@ function drawMeanChart(scroll_number) {
 
   all_Selection.append('text')
       .attr('class', 'citiesName')
-      .attr('transform', 'translate(' + [250,40] + ')')
+      .attr('transform', 'translate(' + [170,30] + ')')
       .text('All Regions');
 }
-
-
-
 
 function drawMeanUpdate(scroll_number) {
 
