@@ -83,10 +83,6 @@ h2 {
 
 .axis { font: 18px sans-serif; }
 
-rect {
-     fill: transparent;
-     opacity: 0.5;
- }
 
 .rrr text
  {
@@ -101,14 +97,15 @@ rect {
     visibility: visible;
 }
 
-.hiddenEven rect
+.hiddenEven
 {
-    fill: none;
+    opacity: 0.3;
 }
 
-.hiddenOdd rect
+.hiddenOdd
 {
-    fill:red;
+    opacity: 0.3;
+
 }
 
 /*#last {*/

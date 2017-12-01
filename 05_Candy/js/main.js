@@ -425,6 +425,51 @@ function drawMeanChart(scroll_number) {
    */
 
 
+    all_r = svg.selectAll('.r')
+        .data(all_array);
+
+    all_rEnter = all_r.enter()
+        .append('g')
+        .attr('class', 'r')
+        .attr('transform', 'translate(1100,20)');
+
+
+    all_rEnter.append('rect');
+
+    all_r.merge(all_rEnter)
+        .transition()
+        .select('rect')
+        .attr('x',  function (d,i) {
+            if (i<=1) {
+                return i*45 + 20;
+            } else if (i<=3) {
+                return i*45 + 40;
+            } else if (i<=5) {
+                return i*45 + 60;
+            } else {
+                return i*45 + 80;
+            }
+        })
+        .attr('y', function (d) {
+            if (d > 0) {
+                return yScale(d);
+            } else {
+                return yScale(0);
+            }
+        })
+        .attr('height', function (d) {
+            return Math.abs(yScale(d)- yScale(0));
+        })
+        .attr('width', 45)
+        .style('fill', function (d,i) {
+            if (i%2==0) {
+                return '#00BFFF';
+            } else {
+                return 'pink';
+            }
+        });
+
+
     all_Selection = svg.selectAll('.allSelections')
         .data(all)
         .enter()
@@ -472,9 +517,9 @@ function drawMeanChart(scroll_number) {
                     //console.log(j);
 
                     if ((j%8) == i) {
-                        return true;
-                    } else {
                         return false;
+                    } else {
+                        return true;
                     }
                 });
         })
@@ -555,51 +600,6 @@ function drawMeanChart(scroll_number) {
           return d;
       })
       .attr('transform', 'translate(30,205)');
-
-
-    all_r = svg.selectAll('.r')
-        .data(all_array);
-
-  all_rEnter = all_r.enter()
-        .append('g')
-        .attr('class', 'r')
-        .attr('transform', 'translate(1100,20)');
-
-
-   all_rEnter.append('rect');
-
-   all_r.merge(all_rEnter)
-       .transition()
-       .select('rect')
-      .attr('x',  function (d,i) {
-          if (i<=1) {
-              return i*45 + 20;
-          } else if (i<=3) {
-              return i*45 + 40;
-          } else if (i<=5) {
-              return i*45 + 60;
-          } else {
-              return i*45 + 80;
-          }
-      })
-      .attr('y', function (d) {
-          if (d > 0) {
-              return yScale(d);
-          } else {
-              return yScale(0);
-          }
-      })
-      .attr('height', function (d) {
-          return Math.abs(yScale(d)- yScale(0));
-      })
-      .attr('width', 45)
-      .style('fill', function (d,i) {
-          if (i%2==0) {
-              return '#00BFFF';
-          } else {
-              return 'pink';
-          }
-      });
 
 
     all_Selection_texts = all_Selection.selectAll('.labels')
