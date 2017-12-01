@@ -136,6 +136,10 @@ var categories_amount = null;
 var candy_categories_names = null;
 
 
+function formatPercent(d) {
+    return d * 100 + "%";
+}
+
 d3.csv('./data/us_candy.csv', function(error, __dataset){
     if(error) {
         console.error('Error while loading candy csv dataset.');
@@ -320,7 +324,7 @@ function drawMeanChart(scroll_number) {
       .attr('transform', function(d, i) {
           var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
           var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t;
-          return 'translate('+[tx, ty]+')';
+          return 'translate('+[tx+20, ty]+')';
       })
       .style('fill', 'white');
 
@@ -333,7 +337,7 @@ function drawMeanChart(scroll_number) {
           // Use indices to space out the trellis groups in 2x2 matrix
           var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
           var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t;
-          return 'translate(' + [tx, ty] + ')';
+          return 'translate(' + [tx+20, ty] + ')';
       });
 
   /*
@@ -354,7 +358,7 @@ function drawMeanChart(scroll_number) {
       .enter()
       .append('g')
       .attr('class', 'all')
-      .attr('transform','translate(1300,10)');
+      .attr('transform','translate(1380,10)');
 
 
   /*
@@ -362,7 +366,7 @@ function drawMeanChart(scroll_number) {
    */
 
   xAxis = d3.axisBottom(xScale).ticks(0);
-  yAxis = d3.axisLeft(yScale).ticks(4);
+  yAxis = d3.axisLeft(yScale).ticks(4).tickFormat(formatPercent);
 
   /*
       Axes for Regions
@@ -486,7 +490,7 @@ function drawMeanChart(scroll_number) {
   all_rEnter = all_r.enter()
         .append('g')
         .attr('class', 'r')
-        .attr('transform', 'translate(1300,20)');
+        .attr('transform', 'translate(1380,20)');
 
 
    all_rEnter.append('rect');
@@ -543,7 +547,7 @@ function drawMeanChart(scroll_number) {
       .text(function (d) {
           return d;
       })
-      .attr('transform', 'translate(13,205)');
+      .attr('transform', 'translate(90,205)');
 
 
   /*
@@ -561,8 +565,8 @@ function drawMeanChart(scroll_number) {
 
   all_Selection.append('text')
       .attr('class', 'citiesName')
-      .attr('transform', 'translate(' + [170,40] + ')')
-      .text('All');
+      .attr('transform', 'translate(' + [250,40] + ')')
+      .text('All Regions');
 }
 
 
