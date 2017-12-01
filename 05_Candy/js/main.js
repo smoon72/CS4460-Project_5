@@ -485,6 +485,7 @@ function drawMeanChart(scroll_number) {
       })
       .attr('transform', 'translate(30,205)');
 
+
     all_r = svg.selectAll('.r')
         .data(all_array);
 
