@@ -111,16 +111,38 @@ function get_joy_percentage(joy_value) {
 }
 
 var candy_counter = 0;
+
+var choco_arr = [];
+var fruit_arr = [];
+var other_arr = [];
+var gum_arr = [];
+var licorice_arr = [];
+var trail_mix_arr = [];
+
+/*
+    Keep track of number of values
+ */
+var choco_amount = [];
+var fruit_amount = [];
+var other_amount = [];
+var gum_amount = [];
+var licorice_amount = [];
+var trail_mix_amount = [];
+
+
+var regions_names = null;
+var categories_names = null;
+var categories_amount = null;
+var candy_categories_names = null;
+
+
 d3.csv('./data/us_candy.csv', function(error, __dataset){
     if(error) {
         console.error('Error while loading candy csv dataset.');
         console.error(error);
         return;
     }
-    // **** Your JavaScript code goes here ***
 
-    var i = 0;
-    //console.log(__dataset);
     dataset = __dataset;
 
     data_by_region_age_gender = d3.nest()
@@ -134,25 +156,8 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
           return d.Q2_GENDER;
         }).sortKeys(d3.descending)
         .entries(dataset);
-    //
+
      console.log(data_by_region_age_gender);
-
-    var choco_arr = [];
-    var fruit_arr = [];
-    var other_arr = [];
-    var gum_arr = [];
-    var licorice_arr = [];
-    var trail_mix_arr = [];
-
-    /*
-        Keep track of number of values
-     */
-    var choco_amount = [];
-    var fruit_amount = [];
-    var other_amount = [];
-    var gum_amount = [];
-    var licorice_amount = [];
-    var trail_mix_amount = [];
 
     for (var a=0; a<data_by_region_age_gender.length; a++) {
         for (var b=0; b<data_by_region_age_gender[a].values.length; b++) {
@@ -204,358 +209,30 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         }
 
     }
-    d3.graphScroll(0)
-    	.graph(d3.selectAll('#graph'))
-    	.container(d3.select('#container'))
-      .sections(d3.selectAll('#sections > div'))
-      .on('active', function(i){
-          candy_counter = i;
-          console.log(i + 'th section active') ;
-      })
-
-    /*
-        Slicing data into its respective regions
-     */
-    var regions_names = ['NE', 'MW', 'W', 'S'];
-    var categories_names = [choco_arr, fruit_arr, other_arr, gum_arr, licorice_arr, trail_mix_arr];
-    var categories_amount = [choco_amount, fruit_amount, other_amount, gum_amount, licorice_amount, trail_mix_amount];
-    var candy_categories_names = ['Chocolate', 'Fruit', 'Other', 'Gum', 'Licorice', 'Trail_Mix'];
 
 
-    /*
-        Candy Selector
-     */
-    var scroll_number = candy_counter;
-    console.log(candy_counter);
-    console.log(scroll_number);
+      /*
+          Slicing data into its respective regions
+       */
+      regions_names = ['NE', 'MW', 'W', 'S'];
+      categories_names = [choco_arr, fruit_arr, other_arr, gum_arr, licorice_arr, trail_mix_arr];
+      categories_amount = [choco_amount, fruit_amount, other_amount, gum_amount, licorice_amount, trail_mix_amount];
+      candy_categories_names = ['Chocolate', 'Fruit', 'Other', 'Gum', 'Licorice', 'Trail_Mix'];
 
 
-    var candy_name = candy_categories_names[scroll_number];
-    var all_selected = categories_names[scroll_number];
-    var all_amount_selected = categories_amount[scroll_number];
-
-    var bar_data = [];
-    for (var i=0; i<4; i++) {
-        bar_data.push({
-            key: regions_names[i],
-            value: {
 
 
-                bar_value: all_selected.slice(i * 8, i * 8 + 8),
-
-                amount_of_people: all_amount_selected.slice(i * 8, i * 8 + 8)
-
-            }
-        });
-    }
-    console.log(bar_data);
-
-    /*
-        Getting all the information into the all array
-     */
-
-    var all_array = [0,0,0,0,0,0,0,0];
-    var num_array = [0,0,0,0,0,0,0,0];
-    for (var j=0; j<32; j++) {
-        all_array[j%8] = all_array[j%8] + all_selected[j];
-        num_array[j%8] = num_array[j%8] + all_amount_selected[j];
-    }
-
-    for (var k =0; k<all_array.length; k++) {
-        all_array[k] = all_array[k]/4;
-    }
-
-    /*
-     X and Y axis for the bar chart
-     */
-
-    yScale = d3.scaleLinear()
-        .range([chartHeight-40,0])
-        .domain([-1, 1]);
-
-    xScale = d3.scaleLinear()
-        .range([0,chartWidth-170])
-        .domain([-1, 1]);
-
-    /*
-        Rectangle
-     */
-
-    var padding = {t: 10, r: 20, b: 10, l: 40};
-    var dum = ['A', 'B', 'C', 'D'];
-
-    var all = [1];
-
-    /*
-        Regions rectangle
-     */
-
-    svg.selectAll('.background')
-        .data(dum)
-        .enter()
-        .append('rect')
-        .attr('class', 'background')
-        .attr('width', chartWidth)
-        .attr('height', chartHeight)
-        .attr('transform', function(d, i) {
-            var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
-            var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t;
-            return 'translate('+[tx, ty]+')';
+      d3.graphScroll(0)
+      	.graph(d3.selectAll('#graph'))
+      	.container(d3.select('#container'))
+        .sections(d3.selectAll('#sections > div'))
+        .on('active', function(i){
+            drawMeanChart(i)
+            console.log(i + 'th section active') ;
         })
-        .style('fill', 'white');
-
-    var trellisG = svg.selectAll('.trellis')
-        .data(data_by_region_age_gender)
-        .enter()
-        .append('g')
-        .attr('class', 'trellis')
-        .attr('transform', function (d, i) {
-            // Use indices to space out the trellis groups in 2x2 matrix
-            var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
-            var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t;
-            return 'translate(' + [tx, ty] + ')';
-        });
-
-    /*
-        All category rectangle
-     */
-    svg.selectAll('.all_rect')
-        .data(all)
-        .enter()
-        .append('rect')
-        .attr('class', 'all_rect')
-        .attr('width', chartWidth-20)
-        .attr('height', chartHeight)
-        .attr('transform', 'translate(1300,10)')
-        .style('fill', 'white');
-
-    var all_rect = svg.selectAll('.all')
-        .data(all)
-        .enter()
-        .append('g')
-        .attr('class', 'all')
-        .attr('transform','translate(1300,10)');
 
 
-    /*
-        Y and X Axis
-     */
-
-    xAxis = d3.axisBottom(xScale).ticks(0);
-    yAxis = d3.axisLeft(yScale).ticks(4);
-
-    /*
-        Axes for Regions
-     */
-    trellisG.append('g')
-        .attr('class', 'x axis')
-        .attr('transform', 'translate(10,' + (chartHeight/2-10) + ')')
-        .call(xAxis);
-    trellisG.append('g')
-        .attr('class', 'y axis')
-        .attr('transform', 'translate(10,10)')
-        .call(yAxis);
-    /*
-     Axes for All
-     */
-
-    all_rect.append('g')
-        .attr('class', 'x axis')
-        .attr('transform', 'translate(10,' + (chartHeight/2-10) + ')')
-        .call(xAxis);
-
-    all_rect.append('g')
-        .attr('class', 'y axis')
-        .attr('transform', 'translate(10,' + 10 + ')')
-        .call(yAxis);
-
-    /*
-        Appending the group to the rectangles
-     */
-
-    trellisSelection = svg.selectAll('.tSelections')
-        .data(bar_data)
-        .enter()
-        .append('g')
-        .attr('class', 'tSelections')
-        .attr('transform', function (d, i) {
-            // Use indices to space out the trellis groups in 2x2 matrix
-            var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
-            var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t + 5;
-            return 'translate(' + [tx, ty+5] + ')';
-        });
-
-
-    all_Selection = svg.selectAll('.allSelections')
-        .data(all)
-        .enter()
-        .append('g')
-        .attr('class', 'allSelections')
-        .attr('transform', 'translate(1300,20)');
-
-
-
-
-    /*
-        Appending the rectangles
-     */
-    trellisSelection.selectAll('rect')
-        .data(function (d) {
-            return d.value.bar_value;
-        })
-        .enter()
-        .append('rect')
-        .attr('x',  function (d,i) {
-            if (i<=1) {
-                return i*40 + 30;
-            } else if (i<=3) {
-                return i*40 + 60;
-            } else if (i<=5) {
-                return i*40 + 90;
-            } else {
-                return i*40 + 120;
-            }
-        })
-        .attr('y', function (d) {
-            if (d > 0) {
-                return yScale(d);
-            } else {
-                return yScale(0);
-            }
-        })
-        .attr('height', function (d) {
-            return Math.abs(yScale(d)- yScale(0));
-        })
-        .attr('width', 40)
-        .style('fill', function (d,i) {
-            if (i%2==0) {
-                return '#00BFFF';
-            } else {
-                return 'pink';
-            }
-        });
-
-    trellisSelection.selectAll('text')
-        .data(function (d) {
-            return d.value.amount_of_people;
-        })
-        .enter()
-        .append('text')
-        .attr('x',  function (d,i) {
-            //console.log(d);
-            if (i<=1) {
-                return i*40 + 30;
-            } else if (i<=3) {
-                return i*40 + 60;
-            } else if (i<=5) {
-                return i*40 + 90;
-            } else {
-                return i*40 + 120;
-            }
-        })
-        .text(function (d) {
-            return d;
-        })
-        .attr('transform', 'translate(13,205)');
-        // .style('fill', function (d,i) {
-        //     if (i%2 == 0) {
-        //         return 'white'
-        //     }
-        // });
-
-    all_Selection.selectAll('rect')
-        .data(all_array)
-        .enter()
-        .append('rect')
-        .attr('x',  function (d,i) {
-            if (i<=1) {
-                return i*40 + 30;
-            } else if (i<=3) {
-                return i*40 + 60;
-            } else if (i<=5) {
-                return i*40 + 90;
-            } else {
-                return i*40 + 120;
-            }
-        })
-        .attr('y', function (d) {
-            if (d > 0) {
-                return yScale(d);
-            } else {
-                return yScale(0);
-            }
-        })
-        .attr('height', function (d) {
-            return Math.abs(yScale(d)- yScale(0));
-        })
-        .attr('width', 40)
-        .style('fill', function (d,i) {
-            if (i%2==0) {
-                return '#00BFFF';
-            } else {
-                return 'pink';
-            }
-        });
-
-    all_Selection.selectAll('text')
-        .data(num_array)
-        .enter()
-        .append('text')
-        .attr('x',  function (d,i) {
-            //console.log(d);
-            if (i<=1) {
-                return i*40 + 30;
-            } else if (i<=3) {
-                return i*40 + 60;
-            } else if (i<=5) {
-                return i*40 + 90;
-            } else {
-                return i*40 + 120;
-            }
-        })
-        .text(function (d) {
-            return d;
-        })
-        .attr('transform', 'translate(13,205)');
-
-
-
-
-
-
-
-
-    /*
-        Labels on the graph
-     */
-    trellisG.append('text')
-        .attr('class', 'citiesName')
-        .attr('transform', 'translate(' + [170,40] + ')')
-        .text(function (d) {
-            if (d.key == 'Owest') {
-                return 'West'
-            }
-            return d.key;
-        });
-
-    all_Selection.append('text')
-        .attr('class', 'citiesName')
-        .attr('transform', 'translate(' + [170,40] + ')')
-        .text('All');
-
-    all_Selection.append('text')
-        .attr('class', 'citiesName')
-        .attr('transform', 'translate(' + [170,500] + ')')
-        .text(candy_name);
-
-
-
-
-
-
-
-
-
+      drawMeanChart(0)
 
 
 
@@ -566,10 +243,352 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
 });
 
 
+function drawMeanChart(scroll_number) {
+
+
+
+  /*
+      Candy Selector
+   */
+  console.log(scroll_number);
+
+
+  var candy_name = candy_categories_names[scroll_number];
+  var all_selected = categories_names[scroll_number];
+  var all_amount_selected = categories_amount[scroll_number];
+
+  console.log(all_selected)
+
+  var bar_data = [];
+  for (var i=0; i<4; i++) {
+      bar_data.push({
+          key: regions_names[i],
+          value: {
+
+
+              bar_value: all_selected.slice(i * 8, i * 8 + 8),
+
+              amount_of_people: all_amount_selected.slice(i * 8, i * 8 + 8)
+
+          }
+      });
+  }
+  console.log(bar_data);
+
+  /*
+      Getting all the information into the all array
+   */
+
+  var all_array = [0,0,0,0,0,0,0,0];
+  var num_array = [0,0,0,0,0,0,0,0];
+  for (var j=0; j<32; j++) {
+      all_array[j%8] = all_array[j%8] + all_selected[j];
+      num_array[j%8] = num_array[j%8] + all_amount_selected[j];
+  }
+
+  for (var k =0; k<all_array.length; k++) {
+      all_array[k] = all_array[k]/4;
+  }
+
+  /*
+   X and Y axis for the bar chart
+   */
+
+  yScale = d3.scaleLinear()
+      .range([chartHeight-40,0])
+      .domain([-1, 1]);
+
+  xScale = d3.scaleLinear()
+      .range([0,chartWidth-170])
+      .domain([-1, 1]);
+
+  /*
+      Rectangle
+   */
+
+  var padding = {t: 10, r: 20, b: 10, l: 40};
+  var dum = ['A', 'B', 'C', 'D'];
+
+  var all = [1];
+
+  /*
+      Regions rectangle
+   */
+
+  svg.selectAll('.background')
+      .data(dum)
+      .enter()
+      .append('rect')
+      .attr('class', 'background')
+      .attr('width', chartWidth)
+      .attr('height', chartHeight)
+      .attr('transform', function(d, i) {
+          var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
+          var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t;
+          return 'translate('+[tx, ty]+')';
+      })
+      .style('fill', 'white');
+
+  var trellisG = svg.selectAll('.trellis')
+      .data(data_by_region_age_gender)
+      .enter()
+      .append('g')
+      .attr('class', 'trellis')
+      .attr('transform', function (d, i) {
+          // Use indices to space out the trellis groups in 2x2 matrix
+          var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
+          var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t;
+          return 'translate(' + [tx, ty] + ')';
+      });
+
+  /*
+      All category rectangle
+   */
+  svg.selectAll('.all_rect')
+      .data(all)
+      .enter()
+      .append('rect')
+      .attr('class', 'all_rect')
+      .attr('width', chartWidth-20)
+      .attr('height', chartHeight)
+      .attr('transform', 'translate(1300,10)')
+      .style('fill', 'white');
+
+  var all_rect = svg.selectAll('.all')
+      .data(all)
+      .enter()
+      .append('g')
+      .attr('class', 'all')
+      .attr('transform','translate(1300,10)');
+
+
+  /*
+      Y and X Axis
+   */
+
+  xAxis = d3.axisBottom(xScale).ticks(0);
+  yAxis = d3.axisLeft(yScale).ticks(4);
+
+  /*
+      Axes for Regions
+   */
+  trellisG.append('g')
+      .attr('class', 'x axis')
+      .attr('transform', 'translate(10,' + (chartHeight/2-10) + ')')
+      .call(xAxis);
+  trellisG.append('g')
+      .attr('class', 'y axis')
+      .attr('transform', 'translate(10,10)')
+      .call(yAxis);
+  /*
+   Axes for All
+   */
+
+  all_rect.append('g')
+      .attr('class', 'x axis')
+      .attr('transform', 'translate(10,' + (chartHeight/2-10) + ')')
+      .call(xAxis);
+
+  all_rect.append('g')
+      .attr('class', 'y axis')
+      .attr('transform', 'translate(10,' + 10 + ')')
+      .call(yAxis);
+
+  /*
+      Appending the group to the rectangles
+   */
+
+  trellisSelection = svg.selectAll('.tSelections')
+      .remove()
+			.exit()
+      .data(bar_data)
+      .enter()
+      .append('g')
+      .attr('class', 'tSelections')
+      .attr('transform', function (d, i) {
+          // Use indices to space out the trellis groups in 2x2 matrix
+          var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
+          var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t + 5;
+          return 'translate(' + [tx, ty+5] + ')';
+      });
+
+
+  all_Selection = svg.selectAll('.allSelections')
+      .data(all)
+      .enter()
+      .append('g')
+      .attr('class', 'allSelections')
+      .attr('transform', 'translate(1300,20)');
 
 
 
 
+  /*
+      Appending the rectangles
+   */
+  trellisSelection.selectAll('rect')
+      .data(function (d) {
+          return d.value.bar_value;
+      })
+      .enter()
+      .append('rect')
+      .attr('x',  function (d,i) {
+          if (i<=1) {
+              return i*40 + 30;
+          } else if (i<=3) {
+              return i*40 + 60;
+          } else if (i<=5) {
+              return i*40 + 90;
+          } else {
+              return i*40 + 120;
+          }
+      })
+      .attr('y', function (d) {
+          if (d > 0) {
+              return yScale(d);
+          } else {
+              return yScale(0);
+          }
+      })
+      .attr('height', function (d) {
+          return Math.abs(yScale(d)- yScale(0));
+      })
+      .attr('width', 40)
+      .style('fill', function (d,i) {
+          if (i%2==0) {
+              return '#00BFFF';
+          } else {
+              return 'pink';
+          }
+      });
+
+  trellisSelection.selectAll('text')
+      .data(function (d) {
+          return d.value.amount_of_people;
+      })
+      .enter()
+      .append('text')
+      .attr('x',  function (d,i) {
+          //console.log(d);
+          if (i<=1) {
+              return i*40 + 30;
+          } else if (i<=3) {
+              return i*40 + 60;
+          } else if (i<=5) {
+              return i*40 + 90;
+          } else {
+              return i*40 + 120;
+          }
+      })
+      .text(function (d) {
+          return d;
+      })
+      .attr('transform', 'translate(13,205)');
+      // .style('fill', function (d,i) {
+      //     if (i%2 == 0) {
+      //         return 'white'
+      //     }
+      // });
+
+  all_Selection.selectAll('rect')
+      .data(all_array)
+      .enter()
+      .append('rect')
+      .attr('x',  function (d,i) {
+          if (i<=1) {
+              return i*40 + 30;
+          } else if (i<=3) {
+              return i*40 + 60;
+          } else if (i<=5) {
+              return i*40 + 90;
+          } else {
+              return i*40 + 120;
+          }
+      })
+      .attr('y', function (d) {
+          if (d > 0) {
+              return yScale(d);
+          } else {
+              return yScale(0);
+          }
+      })
+      .attr('height', function (d) {
+          return Math.abs(yScale(d)- yScale(0));
+      })
+      .attr('width', 40)
+      .style('fill', function (d,i) {
+          if (i%2==0) {
+              return '#00BFFF';
+          } else {
+              return 'pink';
+          }
+      });
+
+  all_Selection.selectAll('text')
+      .data(num_array)
+      .enter()
+      .append('text')
+      .attr('x',  function (d,i) {
+          //console.log(d);
+          if (i<=1) {
+              return i*40 + 30;
+          } else if (i<=3) {
+              return i*40 + 60;
+          } else if (i<=5) {
+              return i*40 + 90;
+          } else {
+              return i*40 + 120;
+          }
+      })
+      .text(function (d) {
+          return d;
+      })
+      .attr('transform', 'translate(13,205)');
+
+
+
+
+
+
+
+
+  /*
+      Labels on the graph
+   */
+  trellisG.append('text')
+      .attr('class', 'citiesName')
+      .attr('transform', 'translate(' + [170,40] + ')')
+      .text(function (d) {
+          if (d.key == 'Owest') {
+              return 'West'
+          }
+          return d.key;
+      });
+
+  all_Selection.append('text')
+      .attr('class', 'citiesName')
+      .attr('transform', 'translate(' + [170,40] + ')')
+      .text('All');
+
+  all_Selection.append('text')
+      .attr('class', 'citiesName')
+      .attr('transform', 'translate(' + [170,500] + ')')
+      .text(candy_name);
+
+
+
+
+
+
+}
+
+
+
+
+function drawMeanUpdate(scroll_number) {
+
+
+}
 
 
 
