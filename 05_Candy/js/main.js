@@ -38,7 +38,7 @@ var svg = d3.select('svg');
 var svgWidth = +svg.attr('width');
 var svgHeight = +svg.attr('height');
 
-var chartWidth = 600;
+var chartWidth = 450;
 var chartHeight = 460;
 
 var Northeast = ['Connecticut', 'Maine', 'Massachusetts', 'New Hampshire', 'New Jersey', 'New York', 'Pennsylvania',
@@ -329,7 +329,7 @@ function drawMeanChart(scroll_number) {
       .domain([-1, 1]);
 
   xScale = d3.scaleLinear()
-      .range([0,chartWidth-170])
+      .range([0,chartWidth-20])
       .domain([-1, 1]);
 
   /*
@@ -355,7 +355,7 @@ function drawMeanChart(scroll_number) {
       .attr('transform', function(d, i) {
           var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
           var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t;
-          return 'translate('+[tx+20, ty]+')';
+          return 'translate('+[tx, ty]+')';
       })
       .style('fill', 'white');
 
@@ -381,7 +381,7 @@ function drawMeanChart(scroll_number) {
       .attr('class', 'all_rect')
       .attr('width', chartWidth-20)
       .attr('height', chartHeight)
-      .attr('transform', 'translate(1300,10)')
+      .attr('transform', 'translate(1000,10)')
       .style('fill', 'white');
 
   var all_rect = svg.selectAll('.all')
@@ -389,7 +389,7 @@ function drawMeanChart(scroll_number) {
       .enter()
       .append('g')
       .attr('class', 'all')
-      .attr('transform','translate(1380,10)');
+      .attr('transform','translate(1100,10)');
 
 
   /*
@@ -434,7 +434,7 @@ function drawMeanChart(scroll_number) {
         .enter()
         .append('g')
         .attr('class', 'allSelections')
-        .attr('transform', 'translate(1300,20)');
+        .attr('transform', 'translate(1100,20)');
 
 
 
@@ -496,13 +496,13 @@ function drawMeanChart(scroll_number) {
       .attr('x',  function (d,i) {
           //console.log(d)
           if (i<=1) {
-              return i*40 + 30;
+              return i*45 + 20;
           } else if (i<=3) {
-              return i*40 + 60;
+              return i*45 + 40;
           } else if (i<=5) {
-              return i*40 + 90;
+              return i*45 + 60;
           } else {
-              return i*40 + 120;
+              return i*45 + 80;
           }
       })
       .attr('y', function (d) {
@@ -515,7 +515,7 @@ function drawMeanChart(scroll_number) {
       .attr('height', function (d) {
           return Math.abs(yScale(d)- yScale(0));
       })
-      .attr('width', 40)
+      .attr('width', 45)
       .style('fill', function (d,i) {
           if (i%2==0) {
               return '#00BFFF';
@@ -564,7 +564,7 @@ function drawMeanChart(scroll_number) {
   all_rEnter = all_r.enter()
         .append('g')
         .attr('class', 'r')
-        .attr('transform', 'translate(1380,20)');
+        .attr('transform', 'translate(1100,20)');
 
 
    all_rEnter.append('rect');
@@ -574,13 +574,13 @@ function drawMeanChart(scroll_number) {
        .select('rect')
       .attr('x',  function (d,i) {
           if (i<=1) {
-              return i*40 + 30;
+              return i*45 + 20;
           } else if (i<=3) {
-              return i*40 + 60;
+              return i*45 + 40;
           } else if (i<=5) {
-              return i*40 + 90;
+              return i*45 + 60;
           } else {
-              return i*40 + 120;
+              return i*45 + 80;
           }
       })
       .attr('y', function (d) {
@@ -593,7 +593,7 @@ function drawMeanChart(scroll_number) {
       .attr('height', function (d) {
           return Math.abs(yScale(d)- yScale(0));
       })
-      .attr('width', 40)
+      .attr('width', 45)
       .style('fill', function (d,i) {
           if (i%2==0) {
               return '#00BFFF';
@@ -625,7 +625,7 @@ function drawMeanChart(scroll_number) {
     .text(function (d) {
     return d;
     })
-    .attr('transform', 'translate(90,205)');
+    .attr('transform', 'translate(0,205)');
 
 
   // all_Selection.selectAll('text')
