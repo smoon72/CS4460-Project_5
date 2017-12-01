@@ -506,20 +506,17 @@ function drawMeanChart(scroll_number) {
         .append('g')
         .attr('class', 'rrr')
         .on("mouseover", function(x,i) {
-
             var className = 'hiddenOdd';
             if (i%2==0) {
                 className = 'hiddenEven'
             }
 
-            d3.selectAll('.rrr')
+            d3.selectAll('.rrr, .textAmount')
                 .classed(className, function (y, j) {
-                    //console.log(j);
-
                     if ((j%8) == i) {
-                        return false;
-                    } else {
                         return true;
+                    } else {
+                        return false;
                     }
                 });
         })
@@ -537,7 +534,7 @@ function drawMeanChart(scroll_number) {
     trellisSelection2.merge(trellisSelectionEnter)
         .transition()
         .select('rect')
-      .attr('x',  function (d,i) {
+        .attr('x',  function (d,i) {
           //console.log(d)
           if (i<=1) {
               return i*45 + 20;
@@ -562,7 +559,7 @@ function drawMeanChart(scroll_number) {
       .attr('width', 45)
       .style('fill', function (d,i) {
           if (i%2==0) {
-              return '#00BFFF';
+              return '#87CEFA';
           } else {
               return 'pink';
           }
