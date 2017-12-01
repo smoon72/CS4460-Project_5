@@ -563,28 +563,6 @@ function drawMeanChart(scroll_number) {
       .attr('class', 'citiesName')
       .attr('transform', 'translate(' + [170,40] + ')')
       .text('All');
-
-
-
-
-
-    all_t = svg.selectAll('.candyName')
-        .data(candy_name);
-
-    all_tEnter = all_t.enter()
-        .append('g')
-        .attr('class', 'candyName')
-        .attr('transform', 'translate(1450,530)');
-
-
-    all_tEnter.append('text');
-
-    all_t.merge(all_tEnter)
-        .transition()
-        .select('text')
-        .text(function (d) {
-            return d;
-        });
 }
 
 
