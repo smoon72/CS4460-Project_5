@@ -78,6 +78,8 @@ function get_region(state) {
   }
 }
 
+var age_groups = ["6-17", "18-34", "35-59", "60+"]
+
 function get_age_group(age) {
   if (age < 18 ) {
     return "6-17";
@@ -235,30 +237,20 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
             drawMeanChart(i)
         })
         .attr("transform", function (d, i) { return "translate("+ (200)*i +",0)";})
-        var button_circle = button_category_group.selectAll("circle").data([0]).enter().append("circle")
+        var button_circle = button_category_group.selectAll("image").data([0]).enter().append("image")
         button_circle
-        .attr("r", 20)
+        //.attr("r", 20)
+        .attr("width", 40)
+        .attr("height", 40)
+        .attr("x", -20)
+        .attr("xlink:href", "images/candy-cane-clipart-blue-candy-3.png")
         var button_label = button_category_group.append("text")
         button_label
         .attr("class","buttonText")
         .text(function(d) {return d;})
         .attr("text-anchor","middle")
         .attr("transform", "translate(0,-30)")
-      // var button_select = button_group_select.selectAll(".button").data([ "Chocolate", "Fruit", "Other", "Gum", "Licorice", "Trail_Mix"])
-      //
-      //   var button = button_select.enter().append("g").attr("class", "radio-button")
-      //
-      //   button.append("label")
-      //   .style("cursor","pointer")
-      //   .attr("class", "button")
-      //   .on("click",function(d,i) {
-      //     console.log("hey!")
-      //     })
-      //
-      //   // button.append("circle")
-      //   //   .attr("button_rect")
-      //   //   .attr("r", 20)
-      //   button.exit().remove()
+
       drawMeanChart(0)
       drawMeanChart(0)
       drawMeanChart(0)
@@ -397,7 +389,8 @@ function drawMeanChart(scroll_number) {
           .attr('transform', 'translate(10,10)')
           .call(yAxis);
       trellisG_enter.append('text')
-              .attr('class', 'citiesName')
+              .attr('class', 'CardinalTitle')
+              .attr("font-size", 30)
               .attr('transform', 'translate(' + [170,40] + ')')
               .text(function (d) {
                   if (d.key == 'Owest') {
@@ -455,6 +448,16 @@ function drawMeanChart(scroll_number) {
       .attr('transform', 'translate(10,' + (chartHeight/2-10) + ')')
       .call(xAxis);
 
+  console.log(data_by_region_age_gender)
+  // var x0 = d3.scaleBand()
+  //     .rangeRound([0, width])
+  //     .paddingInner(0.1);
+  //   x0.domain(data.map(function(d) { return d.State; }));
+  //
+  all_rect.append('g')
+          .attr('class', 'x axis')
+          .attr('transform', 'translate(10,' + (chartHeight-10) + ')')
+          .call(xAxis);
   all_rect.append('g')
       .attr('class', 'y axis')
       .attr('transform', 'translate(10,' + 10 + ')')
@@ -525,37 +528,37 @@ function drawMeanChart(scroll_number) {
   })
 
 
-  var text_selection = trellisSelection.selectAll('text.trellis_text')
-      .data(function (d) {
-          return d.value.amount_of_people;
-      })
-  //add non-changing attributes to new elements
-      var text_enter = text_selection.enter()
-      .append('text')
-      .attr("class", "trellis_text")
-      text_selection.exit().remove()
-      text_enter.text(function (d) {
-          return d;
-      })
-      .attr('x',  function (d,i) {
-          //console.log(d);
-          if (i<=1) {
-              return i*40 + 30;
-          } else if (i<=3) {
-              return i*40 + 60;
-          } else if (i<=5) {
-              return i*40 + 90;
-          } else {
-              return i*40 + 120;
-          }
-      })
-      .text(function (d) {
-          return d;
-      }).style('fill', function (d,i) {
-          if (i%2 == 0) {
-              return 'grey'
-          }
-      }).attr('transform', 'translate(13,205)')
+  // var text_selection = trellisSelection.selectAll('text.trellis_text')
+  //     .data(function (d) {
+  //         return d.value.amount_of_people;
+  //     })
+  // //add non-changing attributes to new elements
+  //     var text_enter = text_selection.enter()
+  //     .append('text')
+  //     .attr("class", "trellis_text")
+  //     text_selection.exit().remove()
+  //     text_enter.text(function (d) {
+  //         return d;
+  //     })
+  //     .attr('x',  function (d,i) {
+  //         //console.log(d);
+  //         if (i<=1) {
+  //             return i*40 + 30;
+  //         } else if (i<=3) {
+  //             return i*40 + 60;
+  //         } else if (i<=5) {
+  //             return i*40 + 90;
+  //         } else {
+  //             return i*40 + 120;
+  //         }
+  //     })
+  //     .text(function (d) {
+  //         return d;
+  //     }).style('fill', function (d,i) {
+  //         if (i%2 == 0) {
+  //             return 'grey'
+  //         }
+  //     }).attr('transform', 'translate(13,205)')
 
   var all_Selection = svg.selectAll('.allSelections')
             .data(all)
@@ -629,7 +632,7 @@ function drawMeanChart(scroll_number) {
       Labels on the graph
    */
 
-  var all_title_select = all_Selection.selectAll(".AllTitle").data([0])
+  var all_title_select = all_Selection.selectAll("text.AllTitle").data([0])
       all_title_select.enter()
       .append('text')
       .attr('class', 'AllTitle')

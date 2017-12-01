@@ -75,8 +75,17 @@ h2 {
     width: 500px;
 }
 
+.CardinalTitle {
+    font-size: 30px;
+    font-weight: bold;
+}
 
-.candyName {
+.AllTitle {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.candyTitle {
     font-size: 30px;
     font-weight: bold;
 }
