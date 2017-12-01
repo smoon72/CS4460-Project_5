@@ -459,7 +459,8 @@ function drawMeanChart(scroll_number) {
           } else {
               return 'pink';
           }
-      });
+      })
+      .attr('transform', 'translate(20,0)');
 
   trellisSelection.selectAll('text')
       .data(function (d) {
@@ -482,7 +483,7 @@ function drawMeanChart(scroll_number) {
       .text(function (d) {
           return d;
       })
-      .attr('transform', 'translate(13,205)');
+      .attr('transform', 'translate(30,205)');
 
     all_r = svg.selectAll('.r')
         .data(all_array);
