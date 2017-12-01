@@ -469,78 +469,6 @@ function drawMeanChart(scroll_number) {
 
   var trellisSelection = svg.selectAll('.tSelections').data(bar_data)
 
-<<<<<<< HEAD
-    all_Selection = svg.selectAll('.allSelections')
-        .data(all)
-        .enter()
-        .append('g')
-        .attr('class', 'allSelections')
-        .attr('transform', 'translate(1100,20)');
-
-    trellisSelection = svg.selectAll('.tSelections')
-        .data(bar_data);
-    trellisSelectionEnter = trellisSelection.enter()
-        .append('g')
-        .attr('class', 'tSelections')
-        .attr('transform', function (d, i) {
-            // Use indices to space out the trellis groups in 2x2 matrix
-            var tx = (i % 2) * (chartWidth + padding.l + padding.r) + padding.l;
-            var ty = Math.floor(i / 2) * (chartHeight + padding.t + padding.b) + padding.t + 5;
-            return 'translate(' + [tx, ty + 5] + ')';
-        });;
-
-    trellisSelectionEnter.append('g');
-
-    trellisSelection.merge(trellisSelectionEnter)
-        .select('g');
-
-    /*
-     Appending the rectangles
-     */
-
-    trellisSelection2 = trellisSelection.selectAll('.rrr')
-        .data(function (d) {
-            return d.value.bar_value;
-        });
-    trellisSelectionEnter = trellisSelection2.enter()
-        .append('g')
-        .attr('class', 'rrr')
-        .on("mouseover", function(x,i) {
-
-            var className = 'hiddenOdd';
-            if (i%2==0) {
-                className = 'hiddenEven'
-            }
-
-            d3.selectAll('.rrr')
-                .classed(className, function (y, j) {
-                    //console.log(j);
-
-                    if ((j%8) == i) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                });
-        })
-        .on("mouseout", function(d) {
-            d3.selectAll('.hiddenEven, .hiddenOdd')
-                .classed('hiddenEven', false)
-                .classed('hiddenOdd', false);
-
-        });
-
-
-
-    trellisSelectionEnter.append('rect');
-    trellisSelectionEnter.append('text');
-    trellisSelection2.merge(trellisSelectionEnter)
-        .transition()
-        .select('rect')
-      .attr('x',  function (d,i) {
-          //console.log(d)
-=======
-
   trellisSelection.enter()
       .append('g')
       .attr('class', 'tSelections')
@@ -646,7 +574,6 @@ function drawMeanChart(scroll_number) {
       .attr("class", "allrect")
       all_rect.exit().remove()
       all_rect.attr('x',  function (d,i) {
->>>>>>> 09cdf3a6cd1b4f99c045d1c7559a32789a4ad45d
           if (i<=1) {
               return i*40 + 30;
           } else if (i<=3) {
