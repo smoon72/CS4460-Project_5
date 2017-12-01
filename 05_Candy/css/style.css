@@ -62,3 +62,9 @@ h1{
 
 .axis { font: 18px sans-serif; }
 
+rect {
+     fill: transparent;
+     opacity: 0.5;
+ }
+
+

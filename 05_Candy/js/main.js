@@ -590,22 +590,6 @@ function drawMeanChart(scroll_number) {
         .text(function (d) {
             return d;
         });
-
-
-
-
-  //
-  //
-  // all_Selection.append('text')
-  //     .attr('class', 'citiesName')
-  //     .attr('transform', 'translate(' + [170,500] + ')')
-  //     .text(candy_name);
-
-
-
-
-
-
 }
 
 
