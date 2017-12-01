@@ -101,6 +101,16 @@ rect {
     visibility: visible;
 }
 
+.hiddenEven rect
+{
+    fill: none;
+}
+
+.hiddenOdd rect
+{
+    fill:red;
+}
+
 /*#last {*/
     /*width: 1000px;*/
     /*text-align: center;*/

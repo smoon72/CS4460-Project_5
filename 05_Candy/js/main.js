@@ -459,7 +459,34 @@ function drawMeanChart(scroll_number) {
         });
     trellisSelectionEnter = trellisSelection2.enter()
         .append('g')
-        .attr('class', 'rrr');
+        .attr('class', 'rrr')
+        .on("mouseover", function(x,i) {
+
+            var className = 'hiddenOdd';
+            if (i%2==0) {
+                className = 'hiddenEven'
+            }
+
+            d3.selectAll('.rrr')
+                .classed(className, function (y, j) {
+                    //console.log(j);
+
+                    if ((j%8) == i) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+        })
+        .on("mouseout", function(d) {
+            d3.selectAll('.hiddenEven, .hiddenOdd')
+                .classed('hiddenEven', false)
+                .classed('hiddenOdd', false);
+
+        });
+
+
+
     trellisSelectionEnter.append('rect');
     trellisSelectionEnter.append('text');
     trellisSelection2.merge(trellisSelectionEnter)
