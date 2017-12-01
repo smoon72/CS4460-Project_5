@@ -431,10 +431,32 @@ function drawMeanChart(scroll_number) {
     all_rEnter = all_r.enter()
         .append('g')
         .attr('class', 'r')
-        .attr('transform', 'translate(1100,20)');
+        .attr('transform', 'translate(1100,20)')
+        .on("mouseover", function(x,i) {
+            var className = 'hiddenOdd';
+            if (i%2==0) {
+                className = 'hiddenEven'
+            }
+
+            d3.selectAll('.rrr, .textAmount, .labels, .r')
+                .classed(className, function (y, j) {
+                    if ((j%8) == i) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+        })
+        .on("mouseout", function(d) {
+            d3.selectAll('.hiddenEven, .hiddenOdd')
+                .classed('hiddenEven', false)
+                .classed('hiddenOdd', false);
+
+        });
 
 
     all_rEnter.append('rect');
+    all_rEnter.append('text');
 
     all_r.merge(all_rEnter)
         .transition()
@@ -463,11 +485,23 @@ function drawMeanChart(scroll_number) {
         .attr('width', 45)
         .style('fill', function (d,i) {
             if (i%2==0) {
-                return '#00BFFF';
+                return '#87CEFA';
             } else {
                 return 'pink';
             }
         });
+
+    all_r.merge(all_rEnter)
+        .select('text')
+        .attr('x', 430)
+        .attr('y', 30)
+        .text(function (d,i) {
+            console.log(d);
+            return Math.round(formatNoPercentage(d.toFixed(2))) + '%';
+        });
+
+
+
 
 
     all_Selection = svg.selectAll('.allSelections')
@@ -476,6 +510,14 @@ function drawMeanChart(scroll_number) {
         .append('g')
         .attr('class', 'allSelections')
         .attr('transform', 'translate(1100,20)');
+
+
+
+
+
+    /*
+        The regions part
+     */
 
     trellisSelection = svg.selectAll('.tSelections')
         .data(bar_data);
@@ -511,7 +553,7 @@ function drawMeanChart(scroll_number) {
                 className = 'hiddenEven'
             }
 
-            d3.selectAll('.rrr, .textAmount')
+            d3.selectAll('.rrr, .textAmount, .labels, .r')
                 .classed(className, function (y, j) {
                     if ((j%8) == i) {
                         return true;
@@ -566,6 +608,11 @@ function drawMeanChart(scroll_number) {
       })
       .attr('transform', 'translate(20,0)');
 
+
+    /*
+        Displaying the percentage above the bars
+     */
+
     trellisSelection2.merge(trellisSelectionEnter)
         .select('text')
         .attr('x', 430)
@@ -574,6 +621,10 @@ function drawMeanChart(scroll_number) {
             return Math.round(formatNoPercentage(d.toFixed(2))) + '%';
         })
 
+
+    /*
+        Displaying amount of people total in the bar
+     */
   trellisSelection.selectAll('.textAmount')
       .data(function (d) {
           return d.value.amount_of_people;
@@ -597,6 +648,13 @@ function drawMeanChart(scroll_number) {
           return d;
       })
       .attr('transform', 'translate(30,205)');
+
+
+
+    /*
+        All graph displaying amount of people total in the bar
+
+     */
 
 
     all_Selection_texts = all_Selection.selectAll('.labels')

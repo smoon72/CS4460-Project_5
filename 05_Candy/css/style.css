@@ -84,7 +84,8 @@ h2 {
 .axis { font: 18px sans-serif; }
 
 
-.rrr text
+.rrr text,
+.r text
  {
     font-size: 30px;
     font-weight: bold;
@@ -93,7 +94,8 @@ h2 {
     pointer-events: none;
 }
 
-.rrr:hover text {
+.rrr:hover text,
+.r:hover text{
     visibility: visible;
 }
 
