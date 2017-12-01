@@ -613,7 +613,8 @@ function drawMeanChart(scroll_number) {
         .attr('x', 430)
         .attr('y', 30)
         .text(function (d,i) {
-            return Math.round(formatNoPercentage(d.toFixed(2))) + '%';
+          console.log(d)
+            return (get_joy_percentage(d)*100).toFixed(2) + '%';
         })
 
 
