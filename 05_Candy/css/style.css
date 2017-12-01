@@ -1,17 +1,44 @@
 #main {
     padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 body {
     font-family: "Open Sans";
 }
 
+p {
+    font-size: 20px;
+    font-weight: bold;
+}
 #sections > div{
 	opacity: .3;
+<<<<<<< HEAD
   margin-bottom: 800px;
+=======
+    margin-bottom: 900px;
+>>>>>>> e7c4ea97dc2c717356c5cf1e1c6900f59aadd6ba
 }
 h1{
   margin: 20px;
+}
+
+
+#title {
+    width: 2000px;
+    margin-bottom: 50px;
+}
+
+#intro {
+    width: 1500px;
+    margin-left: 240px;
+    font-size: 25px;
+}
+
+h2 {
+    font-size: 200px;
+    padding: 10px 0px 20px 150px;
 }
 
 #sections div.graph-scroll-active{
@@ -20,17 +47,24 @@ h1{
 
 #container{
   position: relative;
+
 }
 
 #sections{
-  width: 340px;
+  width: 240px;
+
 }
 
 #graph{
+<<<<<<< HEAD
   width: 800px;
   margin-left: 380px;
+=======
+  width: 500px;
+  margin-left: 220px;
+>>>>>>> e7c4ea97dc2c717356c5cf1e1c6900f59aadd6ba
   position: absolute;
-  top: 0px;
+  top: 10px;
 }
 
 .graph-scroll-fixed #graph{
@@ -50,9 +84,43 @@ h1{
     width: 500px;
 }
 
+<<<<<<< HEAD
 .candyTitle {
     font-size: 50px;
+=======
+.citiesName,
+.candyName {
+    font-size: 30px;
+>>>>>>> e7c4ea97dc2c717356c5cf1e1c6900f59aadd6ba
     font-weight: bold;
 }
 
 .axis { font: 18px sans-serif; }
+<<<<<<< HEAD
+=======
+
+rect {
+     fill: transparent;
+     opacity: 0.5;
+ }
+
+.rrr text
+ {
+    font-size: 30px;
+    font-weight: bold;
+    visibility: hidden;
+    text-anchor: middle;
+    pointer-events: none;
+}
+
+.rrr:hover text {
+    visibility: visible;
+}
+
+/*#last {*/
+    /*width: 1000px;*/
+    /*text-align: center;*/
+    /*margin-left: 450px;*/
+
+/*}*/
+>>>>>>> e7c4ea97dc2c717356c5cf1e1c6900f59aadd6ba

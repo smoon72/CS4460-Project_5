@@ -243,7 +243,6 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         .attr("class","buttonText")
         .text(function(d) {return d;})
         .attr("text-anchor","middle")
-        .attr("transform", "translate(0,-40)")
       // var button_select = button_group_select.selectAll(".button").data([ "Chocolate", "Fruit", "Other", "Gum", "Licorice", "Trail_Mix"])
       //
       //   var button = button_select.enter().append("g").attr("class", "radio-button")
