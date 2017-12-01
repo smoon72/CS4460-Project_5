@@ -88,10 +88,15 @@ rect {
      opacity: 0.5;
  }
 
-.labels {
-    font-size: 18px;
-
+.rrr text
+ {
+    font-size: 30px;
     font-weight: bold;
+    visibility: hidden;
+    text-anchor: middle;
+    pointer-events: none;
 }
 
-
+.rrr:hover text {
+    visibility: visible;
+}

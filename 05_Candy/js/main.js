@@ -172,6 +172,9 @@ var track = 0;
 function formatPercent(d) {
     return d * 100 + "%";
 }
+function formatNoPercentage(d) {
+    return d * 100;
+}
 
 d3.csv('./data/us_candy.csv', function(error, __dataset){
     if(error) {
@@ -201,7 +204,6 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
             for (var c=0; c<data_by_region_age_gender[a].values[b].values.length; c++) {
 
                 var c_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d,i) {
-
                     return get_category_joy(d, Chocolate);
                 });
                 choco_arr.push(c_num);
@@ -478,6 +480,7 @@ function drawMeanChart(scroll_number) {
         .append('g')
         .attr('class', 'rrr');
     trellisSelectionEnter.append('rect');
+    trellisSelectionEnter.append('text');
     trellisSelection2.merge(trellisSelectionEnter)
         .transition()
         .select('rect')
@@ -521,6 +524,14 @@ function drawMeanChart(scroll_number) {
           }
       })
       .attr('transform', 'translate(20,0)');
+
+    trellisSelection2.merge(trellisSelectionEnter)
+        .select('text')
+        .attr('x', 43   0)
+        .attr('y', 30)
+        .text(function (d,i) {
+            return Math.round(formatNoPercentage(d.toFixed(2))) + '%';
+        })
 
   trellisSelection.selectAll('text')
       .data(function (d) {
