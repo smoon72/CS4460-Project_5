@@ -75,8 +75,17 @@ h2 {
     width: 500px;
 }
 
-.citiesName,
-.candyName {
+.CardinalTitle {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.AllTitle {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.candyTitle {
     font-size: 30px;
     font-weight: bold;
 }
