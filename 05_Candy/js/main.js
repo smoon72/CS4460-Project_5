@@ -1,3 +1,34 @@
+// var ul = document.createElement('ul');
+// ul.setAttribute('id','proList');
+//
+
+
+
+// var node = document.createElement("LI");                 // Create a <li> node
+// var textnode = document.createTextNode("Water");         // Create a text node
+//
+// node.appendChild(textnode);
+//
+// var newUl = document.createElement("ol");
+// var br = document.createElement("br");
+//
+// for (var c=0; c<Chocolate.length; c++) {
+//     var s = Chocolate[c];
+//
+//     newUl.appendChild(document.createTextNode(s));
+//     newUl.appendChild(br);
+// }
+
+//newUl.appendChild(textnode);
+
+//var choco = document.getElementById("chocolate").appendChild(newUl);
+
+
+
+//
+// //var h1s = document.getElementsByTagName("h1").appendChild('ul');
+// //console.log(h1s);
+
 /*
     Four Regions across US
     Note about data, Delware not in
@@ -100,8 +131,8 @@ function get_joy_value(joy_string) {
 
 function get_category_joy(entry, category) {
   return d3.mean(category, function(d) {
-      //console.log(d);
       //console.log(entry[d]);
+      //console.log(d);
      return get_joy_value(entry[d]);
   })
 }
@@ -135,6 +166,8 @@ var categories_names = null;
 var categories_amount = null;
 var candy_categories_names = null;
 
+var choco_ranking = new Array(32);
+var track = 0;
 
 function formatPercent(d) {
     return d * 100 + "%";
@@ -167,7 +200,8 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         for (var b=0; b<data_by_region_age_gender[a].values.length; b++) {
             for (var c=0; c<data_by_region_age_gender[a].values[b].values.length; c++) {
 
-                var c_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
+                var c_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d,i) {
+
                     return get_category_joy(d, Chocolate);
                 });
                 choco_arr.push(c_num);
@@ -206,14 +240,10 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
                 });
                 trail_mix_arr.push(trail_mix_num);
                 trail_mix_amount.push(data_by_region_age_gender[a].values[b].values[c].values.length);
-
-
-
             }
         }
 
     }
-
 
       /*
           Slicing data into its respective regions
