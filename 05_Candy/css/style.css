@@ -14,11 +14,7 @@ p {
 }
 #sections > div{
 	opacity: .3;
-<<<<<<< HEAD
-  margin-bottom: 800px;
-=======
     margin-bottom: 900px;
->>>>>>> e7c4ea97dc2c717356c5cf1e1c6900f59aadd6ba
 }
 h1{
   margin: 20px;
@@ -56,13 +52,8 @@ h2 {
 }
 
 #graph{
-<<<<<<< HEAD
-  width: 800px;
-  margin-left: 380px;
-=======
   width: 500px;
   margin-left: 220px;
->>>>>>> e7c4ea97dc2c717356c5cf1e1c6900f59aadd6ba
   position: absolute;
   top: 10px;
 }
@@ -84,20 +75,13 @@ h2 {
     width: 500px;
 }
 
-<<<<<<< HEAD
-.candyTitle {
-    font-size: 50px;
-=======
-.citiesName,
+
 .candyName {
     font-size: 30px;
->>>>>>> e7c4ea97dc2c717356c5cf1e1c6900f59aadd6ba
     font-weight: bold;
 }
 
 .axis { font: 18px sans-serif; }
-<<<<<<< HEAD
-=======
 
 rect {
      fill: transparent;
@@ -123,4 +107,3 @@ rect {
     /*margin-left: 450px;*/
 
 /*}*/
->>>>>>> e7c4ea97dc2c717356c5cf1e1c6900f59aadd6ba
