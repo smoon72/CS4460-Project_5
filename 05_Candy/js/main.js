@@ -618,7 +618,7 @@ function drawMeanChart(scroll_number) {
                 className = 'hiddenEven'
             }
 
-            d3.selectAll('.rrr, .textAmount, .labels, .r')
+            d3.selectAll('.rrr, .textAmount, .labels, .r, .c')
                 .classed(className, function (y, j) {
                     if ((j%8) == i) {
                         return true;
@@ -665,11 +665,27 @@ function drawMeanChart(scroll_number) {
         .attr('width', 45)
         .style('fill', function (d,i) {
             if (i%2==0) {
-                return '#87CEFA';
+                return '#90EE90';
             } else {
-                return 'pink';
+                return '#D3D3D3';
             }
         });
+
+    compare_r.merge(compare_rEnter)
+        .select('text')
+        .attr('x', 430)
+        .attr('y', 30)
+        .text(function (d,i) {
+            //console.log(d);
+            return Math.round(formatNoPercentage(d.toFixed(2))) + '%';
+        });
+
+    compare_Selection = svg.selectAll('.compareSelections')
+        .data(all)
+        .enter()
+        .append('g')
+        .attr('class', 'compareSelections')
+        .attr('transform', 'translate(1100,520)');
 
   /*
       Appending the group to the rectangles
@@ -689,7 +705,7 @@ function drawMeanChart(scroll_number) {
                 className = 'hiddenEven'
             }
 
-            d3.selectAll('.rrr, .textAmount, .labels, .r')
+            d3.selectAll('.rrr, .textAmount, .labels, .r, .c')
                 .classed(className, function (y, j) {
                     if ((j%8) == i) {
                         return true;
@@ -797,7 +813,7 @@ function drawMeanChart(scroll_number) {
                 className = 'hiddenEven'
             }
 
-            d3.selectAll('.rrr, .textAmount, .labels, .r')
+            d3.selectAll('.rrr, .textAmount, .labels, .r, .c')
                 .classed(className, function (y, j) {
                     if ((j%8) == i) {
                         return true;
@@ -862,8 +878,8 @@ function drawMeanChart(scroll_number) {
         .attr('x', 430)
         .attr('y', 30)
         .text(function (d,i) {
-          console.log(d)
-            return (get_joy_percentage(d)*100).toFixed(2) + '%';
+          //console.log(d)
+            return Math.round(formatNoPercentage(d.toFixed(2))) + '%';
         })
 
 
@@ -892,7 +908,7 @@ function drawMeanChart(scroll_number) {
       .text(function (d) {
           return d;
       })
-      .attr('transform', 'translate(30,205)');
+      .attr('transform', 'translate(26,205)');
 
     /*
         All graph displaying amount of people total in the bar
@@ -900,28 +916,56 @@ function drawMeanChart(scroll_number) {
      */
 
     all_Selection_texts = all_Selection.selectAll('.labels')
-    .data(num_array)
-    .enter()
-    .append('g')
-    .attr('class', 'labels');
+        .data(num_array)
+        .enter()
+        .append('g')
+        .attr('class', 'labels');
 
     all_Selection_texts
-    .append('text')
-    .attr('x',  function (d,i) {
-    if (i<=1) {
-    return i*40 + 30;
-    } else if (i<=3) {
-    return i*40 + 60;
-    } else if (i<=5) {
-    return i*40 + 90;
-    } else {
-    return i*40 + 120;
-    }
-    })
-    .text(function (d) {
-    return d;
-    })
-    .attr('transform', 'translate(0,205)');
+        .append('text')
+        .attr('x',  function (d,i) {
+        if (i<=1) {
+        return i*40 + 30;
+        } else if (i<=3) {
+        return i*40 + 60;
+        } else if (i<=5) {
+        return i*40 + 90;
+        } else {
+        return i*40 + 120;
+        }
+        })
+        .text(function (d) {
+        return d;
+        })
+        .attr('transform', 'translate(5,205)');
+
+    compare_texts = compare_Selection.selectAll('.comLabels')
+        .data(num_array)
+        .enter()
+        .append('g')
+        .attr('class', 'comLabels');
+
+    compare_texts
+        .append('text')
+        .attr('x',  function (d,i) {
+            if (i<=1) {
+                return i*40 + 30;
+            } else if (i<=3) {
+                return i*40 + 60;
+            } else if (i<=5) {
+                return i*40 + 90;
+            } else {
+                return i*40 + 120;
+            }
+        })
+        .text(function (d) {
+            return d;
+        })
+        .attr('transform', 'translate(5,195)');
+
+
+
+
 }
 
 

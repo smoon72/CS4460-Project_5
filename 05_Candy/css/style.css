@@ -85,7 +85,8 @@ h2 {
 
 
 .rrr text,
-.r text
+.r text,
+.c text
  {
     font-size: 30px;
     font-weight: bold;
@@ -95,7 +96,8 @@ h2 {
 }
 
 .rrr:hover text,
-.r:hover text{
+.r:hover text,
+.c:hover text{
     visibility: visible;
 }
 
@@ -104,7 +106,6 @@ h2 {
 {
     stroke:black;
     stroke-width: 2px;
-
     fill-opacity: 0.9;
 }
 
