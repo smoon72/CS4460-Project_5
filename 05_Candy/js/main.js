@@ -618,7 +618,7 @@ function drawMeanChart(scroll_number) {
                 className = 'hiddenEven'
             }
 
-            d3.selectAll('.rrr, .textAmount, .labels, .r, .c')
+            d3.selectAll('.c')
                 .classed(className, function (y, j) {
                     if ((j%8) == i) {
                         return true;
@@ -705,7 +705,7 @@ function drawMeanChart(scroll_number) {
                 className = 'hiddenEven'
             }
 
-            d3.selectAll('.rrr, .textAmount, .labels, .r, .c')
+            d3.selectAll('.rrr, .textAmount, .labels, .r')
                 .classed(className, function (y, j) {
                     if ((j%8) == i) {
                         return true;
@@ -813,7 +813,7 @@ function drawMeanChart(scroll_number) {
                 className = 'hiddenEven'
             }
 
-            d3.selectAll('.rrr, .textAmount, .labels, .r, .c')
+            d3.selectAll('.rrr, .textAmount, .labels, .r')
                 .classed(className, function (y, j) {
                     if ((j%8) == i) {
                         return true;
