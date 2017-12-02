@@ -208,7 +208,7 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         }).sortKeys(d3.descending)
         .entries(dataset);
 
-     //console.log(data_by_region_age_gender);
+     console.log(data_by_region_age_gender);
 
     for (var a=0; a<data_by_region_age_gender.length; a++) {
         for (var b=0; b<data_by_region_age_gender[a].values.length; b++) {
@@ -258,10 +258,6 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
 
     }
 
-
-
-
-
       /*
           Slicing data into its respective regions
        */
@@ -294,16 +290,8 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
     for (var c=0; c<6; c++) {
         tempCandyData.push(otherCandyData.splice(counter*4, counter*4+4));
     }
-    //console.log(otherCandyData);
-    //console.log(tempCandyData);
 
     var test = [];
-    //
-    // for (var c=1; c<tempCandyData.length; c++) {
-    //     otherChoco += tempCandyData[c][1];
-    // }
-    // otherChoco = otherChoco/5;
-
 
     var otherChoco = [];
     for (var n=0; n<4; n++) {
@@ -312,7 +300,6 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
                 return d[n];
             }
         }))
-
     }
 
     var otherFruit = [];
@@ -322,7 +309,6 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
                 return d[n];
             }
         }))
-
     }
 
     var otherOther = [];
@@ -332,7 +318,6 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
                 return d[n];
             }
         }))
-
     }
 
 
@@ -343,7 +328,6 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
                 return d[n];
             }
         }))
-
     }
 
     var otherLic = [];
@@ -353,7 +337,6 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
                 return d[n];
             }
         }))
-
     }
 
     var otherTrail = [];
@@ -366,10 +349,9 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
 
     }
 
-     overall = [otherChoco, otherFruit, otherOther, otherGum, otherLic, otherTrail];
-
-    console.log(tempCandyData);
-    console.log(overall);
+    overall = [otherChoco, otherFruit, otherOther, otherGum, otherLic, otherTrail];
+    // console.log(tempCandyData);
+    // console.log(overall);
 
 
     /*
@@ -531,29 +513,6 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
       drawMeanChart(0)
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function drawMeanChart(scroll_number) {
   /*
