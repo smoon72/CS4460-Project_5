@@ -510,8 +510,8 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
 
     compare_rect.append('text')
         .attr('class', 'citiesName')
-        .attr('transform', 'translate(' + [170,30] + ')')
-        .text('Other Candies');
+        .attr('transform', 'translate(' + [20,30] + ')')
+        .text('Joy Factor vs Other Candies');
 
 
 
