@@ -80,8 +80,17 @@ h2 {
     width: 500px;
 }
 
-.citiesName,
-.candyName {
+.CardinalTitle {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.AllTitle {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.candyTitle {
     font-size: 30px;
     font-weight: bold;
 }
@@ -124,6 +133,7 @@ h2 {
 }
 
 
+<<<<<<< HEAD
 
 #last {
     width: 1000px;
@@ -131,3 +141,6 @@ h2 {
     margin-left: 450px;
 
 }
+=======
+/*}*/
+>>>>>>> origin/master

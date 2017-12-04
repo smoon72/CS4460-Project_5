@@ -1,6 +1,3 @@
-// var ul = document.createElement('ul');
-// ul.setAttribute('id','proList');
-//
 /*
     Four Regions across US
     Note about data, Delware not in
@@ -10,8 +7,8 @@ var svg = d3.select('svg');
 var svgWidth = +svg.attr('width');
 var svgHeight = +svg.attr('height');
 
-var chartWidth = 450;
-var chartHeight = 460;
+var chartWidth = 600;
+var chartHeight = 400;
 
 /*
  X and Y axis for the bar chart
@@ -100,6 +97,8 @@ function get_region(state) {
   }
 }
 
+var age_groups = ["6-17", "18-34", "35-59", "60+"]
+
 function get_age_group(age) {
   if (age < 18 ) {
     return "6-17";
@@ -122,8 +121,8 @@ function get_joy_value(joy_string) {
 
 function get_category_joy(entry, category) {
   return d3.mean(category, function(d) {
-      //console.log(entry[d]);
       //console.log(d);
+      //console.log(entry[d]);
      return get_joy_value(entry[d]);
   })
 }
@@ -214,7 +213,7 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
         for (var b=0; b<data_by_region_age_gender[a].values.length; b++) {
             for (var c=0; c<data_by_region_age_gender[a].values[b].values.length; c++) {
 
-                var c_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d,i) {
+                var c_num = d3.mean(data_by_region_age_gender[a].values[b].values[c].values, function (d) {
                     return get_category_joy(d, Chocolate);
                 });
                 choco_arr.push(c_num);
@@ -253,10 +252,14 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
                 });
                 trail_mix_arr.push(trail_mix_num);
                 trail_mix_amount.push(data_by_region_age_gender[a].values[b].values[c].values.length);
+
+
+
             }
         }
 
     }
+
 
       /*
           Slicing data into its respective regions
@@ -510,14 +513,24 @@ d3.csv('./data/us_candy.csv', function(error, __dataset){
                 //console.log(i + 'th section active') ;
             }
         })
-      drawMeanChart(0)
+
+
+
+
+
+
+
 
 });
 
 function drawMeanChart(scroll_number) {
+
+
+
   /*
       Candy Selector
    */
+  console.log(scroll_number);
 
   //var candy_name = [candy_categories_names[scroll_number]];
   var all_selected = categories_names[scroll_number];
@@ -798,13 +811,13 @@ function drawMeanChart(scroll_number) {
         .attr('x',  function (d,i) {
           //console.log(d)
           if (i<=1) {
-              return i*45 + 20;
+              return i*40 + 30;
           } else if (i<=3) {
-              return i*45 + 40;
+              return i*40 + 60;
           } else if (i<=5) {
-              return i*45 + 60;
+              return i*40 + 90;
           } else {
-              return i*45 + 80;
+              return i*40 + 120;
           }
       })
       .attr('y', function (d) {
@@ -817,7 +830,7 @@ function drawMeanChart(scroll_number) {
       .attr('height', function (d) {
           return Math.abs(yScale(d)- yScale(0));
       })
-      .attr('width', 45)
+      .attr('width', 40)
       .style('fill', function (d,i) {
           if (i%2==0) {
               return '#87CEFA';
@@ -851,7 +864,7 @@ function drawMeanChart(scroll_number) {
       })
       .enter()
       .append('text')
-      .attr('class', 'textAmount')
+      .attr("class", "all_pop")
       .attr('x',  function (d,i) {
           //console.log(d);
           if (i<=1) {
@@ -864,7 +877,8 @@ function drawMeanChart(scroll_number) {
               return i*40 + 120;
           }
       })
-      .text(function (d) {
+      all_pop_txt.exit().remove()
+      all_pop_txt.text(function (d) {
           return d;
       })
       .attr('transform', 'translate(26,205)');
